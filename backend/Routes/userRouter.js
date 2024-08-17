@@ -47,6 +47,10 @@ router.post("/signup", async (req, res) => {
     const user = await User.create(userData);
     const userId = user._id;
     const token = jwt.sign({ userId }, jwt_seceret);
+    AccountData.create({
+      userId,
+      balance:1 + Math.random()*10000
+    })
     res.status(200).json({
       msg: "User created successfully",
       token: token,
@@ -55,9 +59,7 @@ router.post("/signup", async (req, res) => {
     console.log("connection with data base is failed");
   }
 
-  AccountData.create({
-    
-  })
+ 
 });
 
 const userSingInInput = z.object({
