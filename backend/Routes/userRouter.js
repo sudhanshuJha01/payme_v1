@@ -132,16 +132,16 @@ router.put("/:id", userAuthMiddleware, async (req, res) => {
   }
 });
 
-// router.get('/:friendId',userAuthMiddleware, async (req , res)=>{
-//     let userFriendId = req.params.friendId;
+// router.get('/',userAuthMiddleware, async (req , res)=>{
+//     let userFriendId = req.query.friendId;
 //     let user= await User.findOne(userFriendId);
 //   if(!user){
 //     res.status(411).send("User friend not exist");
 //   }else{
 //     userInfo = user.map(info =>{
-//         return {
+//         return res .json({
 //           username:info.userName
-//         }
+//         })
 //     })
 //     res.status(200).send("User friend is there");
 //   }
