@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
-import { string } from "zod";
-
+import { mongoDbURI } from "../config.js";
 try {
-    mongoose.connect(`mongodb+srv://sudhanshuJha01:Anshuman2009@cluster0.qijccr3.mongodb.net/paymentBank`);
+    mongoose.connect(mongoDbURI);
 } catch (error) {
         console.log(`Error in the connection with dataBase ${error}` );
         
