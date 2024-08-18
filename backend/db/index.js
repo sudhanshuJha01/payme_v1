@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import { string } from "zod";
 
 try {
-    mongoose.connect(`${process.env.MONGODB_URI}/onlinePaymentDatabase`)
+    mongoose.connect(`mongodb+srv://sudhanshuJha01:Anshuman2009@cluster0.qijccr3.mongodb.net/paymentBank`);
 } catch (error) {
         console.log(`Error in the connection with dataBase ${error}` );
         
@@ -42,8 +43,10 @@ const UserSchema = new mongoose.Schema({
 
 },{timestamps:true});
 
+const User = mongoose.model("User" , UserSchema);
+
 const AccountSchema = new mongoose.Schema({
-    userName:{
+    userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:User,
         required:true
@@ -52,11 +55,10 @@ const AccountSchema = new mongoose.Schema({
         type:Number,
         required:true
     }
-})
+},{timestamps:true})
 
 const AccountData = mongoose.model("AccountData",AccountSchema);
 
-const User = mongoose.model("User" , UserSchema);
 
 
 export {User , AccountData}

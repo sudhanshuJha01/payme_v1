@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { userAuthMiddleware } from "../middlewares/user";
-import { AccountData } from "../db";
+import  {userAuthMiddleware}  from "../middlewares/user.js";
+import { AccountData } from "../db/index.js";
 import mongoose from "mongoose";
 
 const router = Router();
 
 
-router.get('/balance' ,userAuthMiddleware , async (req , res) =>{
+router.get('/balance' ,userAuthMiddleware, async (req , res) =>{
     const account = await AccountData.findOne({
         userId : req.userId
     })

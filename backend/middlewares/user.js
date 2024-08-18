@@ -1,24 +1,25 @@
 import jwt from "jsonwebtoken";
-import { jwt_seceret } from "../config";
+import { jwt_secret } from "../config.js";
 
-export const userAuthMiddleware = function(req ,res , next){
-        const authHeader = req.headers.authorization;
-        if(!authHeader || !authHeader.startsWith('Bearer ')){
-            return res.status(403).json({
-                msg:"authHeader did not worked !"
-            })
-        }
+export const userAuthMiddleware = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(403).json({
+            msg: "Authorization header is missing or incorrect!",
+        });
+    }
 
-        const token = authHeader.split(" ")[1];
+    const token = authHeader.split(" ")[1];
 
+    try {
+        const decoded = jwt.verify(token, jwt_secret);
+        req.userId = decoded.userId;
+        next();
+    } catch (error) {
+        console.error("Error in the header verification:", error);
+        return res.status(401).json({
+            msg: "Token is not valid!",
+        });
+    }
+};
 
-        try {
-            const decode = jwt.verify(token , jwt_seceret);
-            req.userId = decode.userId;
-            next();
-        } catch (error) {
-            console.log("Error in the header verification");
-            return ;
-            
-        }
-}
