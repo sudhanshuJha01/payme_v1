@@ -1,17 +1,13 @@
-import express from 'express';
+import express, { urlencoded } from 'express';
 import rootRouter from './Routes/index.js'
 import cors from 'cors';
-import dotenv from 'dotenv' 
 
-
-dotenv.config({
-    path:'.env'
-})
 
 const app = express();
 
-app.use(express.json());
 app.use(cors())
+app.use(express.json());
+app.use(urlencoded({extended:true}))
 
 
 app.use('/api/v1' , rootRouter)

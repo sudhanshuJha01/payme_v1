@@ -28,7 +28,7 @@ router.post("/signup", async (req, res) => {
 
   const userInputValidation = userSingUpInput.safeParse(userData);
   if (!userInputValidation.success) {
-    return res.status(411).json({
+    return res.status(400).json({
       msg: "Email already taken / Incorrect inputs",
     });
   }
@@ -38,7 +38,7 @@ router.post("/signup", async (req, res) => {
   });
 
   if (userExist) {
-    return res.status(411).json({
+    return res.status(409).json({
       msg: "Email already taken/Incorrect inputs",
     });
   }
@@ -73,7 +73,7 @@ router.post("/signin", async (req, res) => {
   });
 
   if (!inputValidation.success) {
-    return res.status(411).json({
+    return res.status(400).json({
       msg: "Input is invalid !",
     });
   }
@@ -96,7 +96,7 @@ router.post("/signin", async (req, res) => {
       token: token,
     });
   } else {
-    return res.status(411).json({
+    return res.status(401).json({
       message: "Error while logging in",
     });
   }
@@ -120,12 +120,12 @@ router.put("/:id", userAuthMiddleware, async (req, res) => {
 
   const updateInputVarification = updateDataVerification.safeParse(updateData);
   if (!updateInputVarification.success) {
-    return res.status(411).json({ msg: "Input is Invalid" });
+    return res.status(400).json({ msg: "Input is Invalid" });
   }
 
   try {
     const update = await User.updateOne({ _id: req.userId }, updateData);
-    if (!update) return res.status(411).json({ msg: "User Not Found " });
+    if (!update) return res.status(409).json({ msg: "User Not Found " });
     res.status(200).json({ msg: "Updated successfully" });
   } catch (error) {
     console.log(`Error occured ${error}`);

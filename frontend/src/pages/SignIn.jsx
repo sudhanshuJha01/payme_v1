@@ -32,12 +32,7 @@ function SignIn() {
           />
         </div>
         <button
-          onClick={(e) => {
-            axios.post("http://localhost:3000/api/v1/user/signin", {
-              userName,
-              password,
-            });
-          }}
+    
           className="text-xl bg-black p-2 rounded-lg border-slate-300 border-2 text-slate-300"
         >
           Sign Up
