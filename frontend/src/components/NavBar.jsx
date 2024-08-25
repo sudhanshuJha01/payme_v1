@@ -17,7 +17,7 @@ const NavBar = ({hostName}) => {
   return (
     <>
       <div className=" bg-slate-950 rounded-md shadow-2xl text-white flex  justify-between items-center border-slate-800 border-2 p-4">
-      <Link to={'/'}> <h1 className="text-3xl ml-3">Payment App</h1></Link> 
+      <Link to={'/'}> <h1 className="text-3xl ml-3">PayMe</h1></Link> 
         <div className="flex items-center gap-3 mr-5">
           <span className="font-medium text-lg">Hello , {hostName && hostName[0].toUpperCase()+hostName.slice(1)}</span>
           <UserSymbol onClick={handleClick} label={hostName ? hostName[0].toUpperCase() : "U" } />
