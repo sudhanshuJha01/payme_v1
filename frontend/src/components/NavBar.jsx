@@ -24,7 +24,7 @@ const NavBar = ({hostName}) => {
         </div>
       </div>
       <div >{flag?<div>
-        <ul className="text-white absolute z-10 bg-slate-900 right-0 mr-20 w-1/6 min-h-1/6 p-1 border-2 border-slate-500 shadow-slate-500 shadow-2xl rounded-xl">
+        <ul className="text-white absolute z-10 bg-slate-900 right-0 mr-20 min-w-1/6 min-h-1/6 p-1 border-2 border-slate-500 shadow-slate-500 shadow-2xl rounded-xl">
           <li className="cursor-pointer m-3 text-xl" onClick={()=>{
             navigate('/profile')
           }}>Profile</li>

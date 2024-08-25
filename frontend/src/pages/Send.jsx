@@ -117,7 +117,7 @@ function Send() {
       </Card>
       <div>
         {flag == 1 ? (
-          <div className="text-white text-2xl my-7 border-2 p-7 rounded-2xl w-1/2 mx-auto shadow-2xl">
+          <div className="text-white text-2xl my-7 border-2 p-7 rounded-2xl min-w-1/2 mx-auto shadow-2xl">
               <h1 className="text-center text-3xl mb-5" >Transfer Successful 🥳</h1>
             <div className="flex gap-3 items-center justify-center">
               <Btn
