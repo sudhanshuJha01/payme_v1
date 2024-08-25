@@ -1,15 +1,16 @@
 import { Router } from "express";
-import { jwt_secret } from "../config.js";
+import 'dotenv/config.js'
 import jwt from 'jsonwebtoken'
 import { User } from "../db/index.js";
 
 const router = Router();
 
+const jwt_secret = process.env.JWT_SECRET
 
 router.post('/',async (req , res)=>{
     const token = req.body.token;
     try {
-        const decode = jwt.verify(token, jwt_secret);
+        const decode = jwt.decode(token);
         const result = await User.findById(decode.userId)
         
         if(result){

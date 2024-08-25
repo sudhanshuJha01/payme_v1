@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
-import { mongoDbURI } from "../config.js";
+import "dotenv/config.js";
 try {
-    mongoose.connect(mongoDbURI);
+    mongoose.connect(`${process.env.MOGODB_URI}/paymetApp`);
+
 } catch (error) {
         console.log(`Error in the connection with dataBase ${error}` );
         

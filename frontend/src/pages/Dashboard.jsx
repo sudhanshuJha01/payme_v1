@@ -88,7 +88,7 @@ const Dashboard = () => {
             {users && 
               users.map((user) => (
                 <li
-                  key={user.id}
+                  key={user._id}
                   className="flex justify-between items-center my-2 border-slate-800 border-2 p-4 rounded-md"
                 >
                   <div className="flex justify-between items-center gap-5">

@@ -2,10 +2,10 @@ import { Router } from "express";
 import { AccountData, User } from "../db/index.js";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
-import { jwt_secret } from "../config.js";
+import "dotenv/config.js";
 import { userAuthMiddleware } from "../middlewares/user.js";
 const router = Router();
-
+const jwt_secret = process.env.JWT_SECRET
 const userSingUpInput = z.object({
   userName: z.string().email(),
   firstName: z.string().min(3),

@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
-import { jwt_secret } from "../config.js";
+import "dotenv/config.js";
 
 export const userAuthMiddleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
+    const jwt_secret = `${process.env.JWT_SECRET}`
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(403).json({
             msg: "Authorization header is missing or incorrect!",
