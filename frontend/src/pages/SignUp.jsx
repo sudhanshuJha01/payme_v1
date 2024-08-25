@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Card from "../components/Card";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -11,7 +11,7 @@ function Signup() {
   const [lastName , setLastName] = useState("")
   const [userName , setUserName] = useState("")
   const [password, setPassword] = useState("")
-  //const navigate = useNavigate();
+ const navigate = useNavigate()
 
   const handleSignUp = async () => {
     try {
@@ -21,8 +21,9 @@ function Signup() {
         lastName,
         password
       });
-      console.log('Response:', response.data);
-      navigate('/welcome'); // Navigate to a new page after successful signup
+      console.log('Response:', response.data.token);
+      localStorage.setItem("token" , response.data.token)
+      navigate('/dashboard')
     } catch (error) {
       console.error('Error:', error);
     }

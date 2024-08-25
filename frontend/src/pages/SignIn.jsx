@@ -6,6 +6,19 @@ import axios from "axios";
 function SignIn() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const handleLogin = async()=>{
+    try {
+      const response = await axios.post('http://localhost:3000/api/v1/user/signin',{
+        userName,
+        password
+      })
+      console.log(response);
+      
+    } catch (error) {
+      console.log('Error in signin' , error);
+      
+    }
+  }
   return (
     <>
       <Card>
@@ -32,10 +45,10 @@ function SignIn() {
           />
         </div>
         <button
-    
+          onClick={handleLogin}
           className="text-xl bg-black p-2 rounded-lg border-slate-300 border-2 text-slate-300"
         >
-          Sign Up
+          Sign In
         </button>
         <p className="text-sm">
           Do not have an account ?
