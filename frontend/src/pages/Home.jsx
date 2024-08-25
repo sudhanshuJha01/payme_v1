@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 const Home = () => {
-  const [token , setToken] = useState(localStorage.getItem("token"))
+  const token = localStorage.getItem("token")
   const navigator = useNavigate()
   useEffect(()=>{
     axios.post("http://localhost:3000/api/v1/me",{

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Card from "../components/Card";
@@ -12,7 +12,20 @@ function Signup() {
   const [userName , setUserName] = useState("")
   const [password, setPassword] = useState("")
  const navigate = useNavigate()
-
+ const token = localStorage.getItem("token");
+ useEffect(()=>{
+  axios.post("http://localhost:3000/api/v1/me",{token})
+  .then((response)=>{
+    if(response.data.success){
+      navigate('/dashboard')
+    }else{
+      navigate('/signup')
+    }
+  }).catch((error)=>{
+    console.log('Error in the signup navigator' , error);
+    
+  })
+ },[token])
   const handleSignUp = async () => {
     try {
       const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
@@ -37,11 +50,11 @@ function Signup() {
         <p className="text-lg text-center">Enter your Information to create your account</p>
         <div>
           <h2>First Name</h2>
-          <input onChange={e=>setFirstName(e.target.value)} className="px-2 rounded-md py-0.5 w-64 text-black font-normal outline-none" type="text" placeholder="firstname" />
+          <input onChange={e=>setFirstName(e.target.value.toLowerCase())} className="px-2 rounded-md py-0.5 w-64 text-black font-normal outline-none" type="text" placeholder="firstname" />
         </div>
         <div>
           <h2>Last Name</h2>
-          <input onChange={e=>setLastName(e.target.value)} className="px-2 rounded-md py-0.5 w-64 text-black font-normal outline-none" type="text" placeholder="lastname" />
+          <input onChange={e=>setLastName(e.target.value.toLowerCase())} className="px-2 rounded-md py-0.5 w-64 text-black font-normal outline-none" type="text" placeholder="lastname" />
         </div>
         <div>
           <h2>Email</h2>

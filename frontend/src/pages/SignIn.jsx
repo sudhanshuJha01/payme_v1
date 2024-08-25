@@ -1,11 +1,28 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import Card from "../components/Card";
 import Btn from "../components/Btn";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function SignIn() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  
+  useEffect(()=>{
+   axios.post("http://localhost:3000/api/v1/me",{token})
+   .then((response)=>{
+     if(response.data.success){
+       navigate('/dashboard')
+     }else{
+       navigate('/signin')
+     }
+   }).catch((error)=>{
+     console.log('Error in the signup navigator' , error);
+     
+   })
+  },[token])
   const handleLogin = async()=>{
     try {
       const response = await axios.post('http://localhost:3000/api/v1/user/signin',{
@@ -13,7 +30,8 @@ function SignIn() {
         password
       })
       console.log(response);
-      
+      localStorage.setItem('token',response.data.token)
+      navigate('/dashboard')
     } catch (error) {
       console.log('Error in signin' , error);
       
