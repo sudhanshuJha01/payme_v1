@@ -14,7 +14,7 @@ function Signup() {
  const navigate = useNavigate()
  const token = localStorage.getItem("token");
  useEffect(()=>{
-  axios.post("http://localhost:3000/api/v1/me",{token})
+  axios.post("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/me",{token})
   .then((response)=>{
     if(response.data.success){
       navigate('/dashboard')
@@ -28,7 +28,7 @@ function Signup() {
  },[token])
   const handleSignUp = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
+      const response = await axios.post("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/user/signup", {
         userName,
         firstName,
         lastName,

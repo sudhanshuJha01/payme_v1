@@ -17,7 +17,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (token) {
       axios
-        .post("http://localhost:3000/api/v1/me", { token })
+        .post("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/me", { token })
         .then((response) => {
           if (response.data.success) {
             setHost({
@@ -40,7 +40,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://localhost:3000/api/v1/user/bulk/?filter=" + filter, {
+        .get("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/user/bulk/?filter=" + filter, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -57,7 +57,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://localhost:3000/api/v1/accounts/balance", {
+        .get("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/accounts/balance", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

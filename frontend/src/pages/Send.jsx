@@ -22,7 +22,7 @@ function Send() {
   const handleTransaction = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/v1/accounts/transfer",
+        "https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/accounts/transfer",
         {
           to: id,
           amount: parseInt(amount),
@@ -51,7 +51,7 @@ function Send() {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://localhost:3000/api/v1/accounts/balance", {
+        .get("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/accounts/balance", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -68,7 +68,7 @@ function Send() {
   useEffect(() => {
     if (token) {
       axios
-        .post("http://localhost:3000/api/v1/me", { token })
+        .post("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/me", { token })
         .then((response) => {
           if (response.data.success) {
             setHost({

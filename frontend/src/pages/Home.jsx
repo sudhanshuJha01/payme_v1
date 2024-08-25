@@ -6,7 +6,7 @@ const Home = () => {
   const token = localStorage.getItem("token")
   const navigator = useNavigate()
   useEffect(()=>{
-    axios.post("http://localhost:3000/api/v1/me",{
+    axios.post("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/me",{
       token
     })
     .then(response=>{
