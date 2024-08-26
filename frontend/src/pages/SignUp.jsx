@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Card from "../components/Card";
 import { useNavigate } from "react-router-dom";
-
+import Btn from "../components/Btn";
 
 
 function Signup() {
@@ -45,9 +45,28 @@ function Signup() {
     }
   };
   
-  
+  const handleGuest = async ()=>{
+    try {
+      const response = await axios.post('https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/user/signin',{
+        userName : "guest@gmail.com",
+        password: "1234567"
+      })
+      console.log(response);
+      setLoading(1);
+      localStorage.setItem('token',response.data.token)
+      navigate('/dashboard')
+    } catch (error) {
+      console.log('Error in signin' , error);
+      setLoading(-1);
+      setUserName("");
+      setPassword("")
+    }
+  }
   return (
     <>
+    <div className="absolute right-0 mr-12 p-3">
+    <Btn  onPress={handleGuest} label={"Continue as guest ➡️"} />
+    </div>
         <Card>
         <h1 className="text-4xl">Registration</h1>
         <p className="text-lg text-center">Enter your Information to create your account</p>
