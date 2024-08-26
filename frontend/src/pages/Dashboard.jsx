@@ -17,7 +17,10 @@ const Dashboard = () => {
   useEffect(() => {
     if (token) {
       axios
-        .post("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/me", { token })
+        .post(
+          "https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/me",
+          { token }
+        )
         .then((response) => {
           if (response.data.success) {
             setHost({
@@ -40,28 +43,39 @@ const Dashboard = () => {
   useEffect(() => {
     if (token) {
       axios
-        .get("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/user/bulk/?filter=" + filter, {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        })
+        .get(
+          "https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/user/bulk/?filter=" +
+            filter,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
         .then((response) => {
-          setUsers(response.data.user.filter(items=>items.firstName!=host.firstName));
+          setUsers(
+            response.data?.user?.filter(
+              (item) => host?.userName !== item?.username
+            )
+          );
         })
         .catch((error) => {
           console.error("There was an error fetching the users!", error);
         });
     }
-  }, [token, filter]);  
+  }, [token, filter]);
 
   useEffect(() => {
     if (token) {
       axios
-        .get("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/accounts/balance", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        .get(
+          "https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/accounts/balance",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then((response) => {
           setBalance(response.data.balance);
         })
@@ -69,14 +83,21 @@ const Dashboard = () => {
           console.log("Error in fetching balance", error);
         });
     }
-  }, [token]);  // Removed 'balance' from dependencies
+  }, [token]); // Removed 'balance' from dependencies
+  console.log(users[0]?.username);
+  console.log(host?.userName);
+  console.log(host?.userName == users[0]?.username);
 
   return (
     <>
       <NavBar hostName={host?.firstName} />
       <div className="text-white m-auto p-7 mt-1 rounded-md bg-slate-950 border-slate-800 border-2 min-h-[90%] shadow-2xl">
-        <h2 className="font-medium text-2xl my-1">Your Balance ₹{parseInt(balance)}</h2>
-        <h3 className="font-medium text-xl my-6">{host?.firstName?.toUpperCase()||""}</h3>
+        <h2 className="font-medium text-2xl my-1">
+          Your Balance ₹{parseInt(balance)}
+        </h2>
+        <h3 className="font-medium text-xl my-6">
+          {host?.firstName?.toUpperCase() || ""}
+        </h3>
         <div>
           <input
             onChange={(e) => setFilter(e.target.value.toLowerCase())}
@@ -85,7 +106,7 @@ const Dashboard = () => {
             className="w-full mb-3 p-1.5 rounded-md px-3 outline-none text-black text-xl"
           />
           <ul>
-            {users && 
+            {users &&
               users.map((user) => (
                 <li
                   key={user._id}
@@ -100,9 +121,15 @@ const Dashboard = () => {
                         user.lastName}
                     </span>
                   </div>
-                  <Btn onPress={()=>{
-                    navigate('/send/?id='+user._id+"&name="+user.firstName)
-                  }} label={"Send Money"} />
+                  <Btn
+                    className={"max-sm:max-w-20 max-sm:text-base max-sm:p-1 "}
+                    onPress={() => {
+                      navigate(
+                        "/send/?id=" + user._id + "&name=" + user.firstName
+                      );
+                    }}
+                    label={"Send Money"}
+                  />
                 </li>
               ))}
           </ul>
