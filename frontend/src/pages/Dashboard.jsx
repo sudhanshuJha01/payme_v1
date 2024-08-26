@@ -53,11 +53,7 @@ const Dashboard = () => {
           }
         )
         .then((response) => {
-          setUsers(
-            response.data?.user?.filter(
-              (item) => host?.userName !== item?.username
-            )
-          );
+          setUsers(response.data?.user);
         })
         .catch((error) => {
           console.error("There was an error fetching the users!", error);
@@ -84,9 +80,6 @@ const Dashboard = () => {
         });
     }
   }, [token]); // Removed 'balance' from dependencies
-  console.log(users[0]?.username);
-  console.log(host?.userName);
-  console.log(host?.userName == users[0]?.username);
 
   return (
     <>
@@ -108,28 +101,31 @@ const Dashboard = () => {
           <ul>
             {users &&
               users.map((user) => (
-                <li
-                  key={user._id}
-                  className="flex justify-between items-center my-2 border-slate-800 border-2 p-4 rounded-md"
-                >
-                  <div className="flex justify-between items-center gap-5">
-                    <UserSymbol label={user.firstName[0].toUpperCase()} />
-                    <span className="text-2xl">
-                      {user.firstName[0].toUpperCase() +
-                        user.firstName.slice(1) +
-                        " " +
-                        user.lastName}
-                    </span>
-                  </div>
-                  <Btn
-                    className={"max-sm:max-w-20 max-sm:text-base max-sm:p-1 "}
-                    onPress={() => {
-                      navigate(
-                        "/send/?id=" + user._id + "&name=" + user.firstName
-                      );
-                    }}
-                    label={"Send Money"}
-                  />
+                <li key={user._id}>
+                  {host.userName !== user?.username ? (
+                    <div className="flex justify-between items-center my-2 border-slate-800 border-2 p-4 rounded-md">
+                      <div className="flex justify-between items-center gap-5">
+                        <UserSymbol label={user.firstName[0].toUpperCase()} />
+                        <span className="text-2xl">
+                          {user.firstName[0].toUpperCase() +
+                            user.firstName.slice(1) +
+                            " " +
+                            user.lastName}
+                        </span>
+                      </div>
+                      <Btn
+                        className={
+                          "max-sm:max-w-20 max-sm:text-base max-sm:p-1 "
+                        }
+                        onPress={() => {
+                          navigate(
+                            "/send/?id=" + user._id + "&name=" + user.firstName
+                          );
+                        }}
+                        label={"Send Money"}
+                      />
+                    </div>
+                  ) : null}
                 </li>
               ))}
           </ul>
