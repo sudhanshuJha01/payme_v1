@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 function SignIn() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const[loading , setLoading] = useState(0);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   
@@ -23,6 +24,7 @@ function SignIn() {
      
    })
   },[token])
+
   const handleLogin = async()=>{
     try {
       const response = await axios.post('https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/user/signin',{
@@ -30,11 +32,14 @@ function SignIn() {
         password
       })
       console.log(response);
+      setLoading(1);
       localStorage.setItem('token',response.data.token)
       navigate('/dashboard')
     } catch (error) {
       console.log('Error in signin' , error);
-      
+      setLoading(-1);
+      setUserName("");
+      setPassword("")
     }
   }
   return (
@@ -47,7 +52,9 @@ function SignIn() {
         <div>
           <h2>Email</h2>
           <input
-            onChange={(e) => setUserName(e.target.value)}
+            onChange={(e) => {setUserName(e.target.value)
+              setLoading(0);
+            }}
             className="px-2 rounded-md py-0.5 w-64 text-black font-normal outline-none"
             type="text"
             placeholder="demo@gmail.com"
@@ -76,6 +83,7 @@ function SignIn() {
           </Link>{" "}
         </p>
       </Card>
+      <div className="text-white text-2xl text-center">{loading==1?<span>Loading......</span>:loading==-1?<span>Enter valid Email and password </span>:null}</div>
     </>
   );
 }
