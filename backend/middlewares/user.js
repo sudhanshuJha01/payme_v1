@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
+import { jwt_secret } from "../Routes/userRouter.js";
+import "dotenv/config.js";
 
 export const userAuthMiddleware = (req, res, next) => {
-
     const authHeader = req.headers.authorization;
-
-    const jwt_secret = process.env.JWT_SECRET;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(403).json({
@@ -12,10 +11,13 @@ export const userAuthMiddleware = (req, res, next) => {
         });
     }
 
-    const token = authHeader.replace("Bearer ","")
-
+    const token = authHeader.split(" ")[1];
+    console.log(token);
+    
     try {
         const decoded = jwt.verify(token, jwt_secret);
+        console.log(decoded.userId);
+        
         req.userId = decoded.userId;
         next();
     } catch (error) {
@@ -25,4 +27,3 @@ export const userAuthMiddleware = (req, res, next) => {
         });
     }
 };
-

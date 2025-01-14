@@ -6,7 +6,10 @@ import { userAuthMiddleware } from "../middlewares/user.js";
 
 const router = Router();
 
-const jwt_secret = process.env.JWT_SECRET
+export const jwt_secret = `${process.env.JWT_SECRET}`
+
+console.log(jwt_secret);
+
 
 const userSingUpInput = z.object({
   userName: z.string().email(),
@@ -17,7 +20,8 @@ const userSingUpInput = z.object({
 
 
 router.post("/signup", async (req, res) => {
- try{ const userName = req.body.userName;
+ try{ 
+  const userName = req.body.userName;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const password = req.body.password;
