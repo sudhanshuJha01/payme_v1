@@ -7,12 +7,6 @@ dotenv.config({
 })
  
 
-
-
-console.log(process.env.MOGODB_URI )
-console.log(process.env.JWT_SECRET );
-
-
 connectDb()
 .then(()=>{
     app.listen(process.env.PORT || 3000 , ()=>{

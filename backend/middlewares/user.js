@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 import { jwt_secret } from "../Routes/userRouter.js";
-import "dotenv/config.js";
 
 export const userAuthMiddleware = (req, res, next) => {
+    try
+    {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -11,19 +12,16 @@ export const userAuthMiddleware = (req, res, next) => {
         });
     }
 
-    const token = authHeader.split(" ")[1];
-    console.log(token);
-    
-    try {
+    const token = authHeader.replace("Bearer ","");
+
         const decoded = jwt.verify(token, jwt_secret);
-        console.log(decoded.userId);
-        
         req.userId = decoded.userId;
         next();
-    } catch (error) {
-        console.error("Error in the header verification:", error);
-        return res.status(401).json({
-            msg: "Token is not valid!",
-        });
-    }
+
+}catch(err){
+    console.error("Error in the header verification:", err);
+    return res.status(401).json({
+        msg: "Token is not valid!",
+    });
+}
 };

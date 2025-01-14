@@ -8,8 +8,6 @@ const router = Router();
 
 export const jwt_secret = `${process.env.JWT_SECRET}`
 
-console.log(jwt_secret);
-
 
 const userSingUpInput = z.object({
   userName: z.string().email(),
