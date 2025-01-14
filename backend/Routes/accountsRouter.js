@@ -1,12 +1,13 @@
 import { Router } from "express";
 import  {userAuthMiddleware}  from "../middlewares/user.js";
-import { AccountData } from "../db/index.js";
 import mongoose from "mongoose";
+import { AccountData } from "../models/user.model.js";
 
 const router = Router();
 
 
 router.get('/balance' ,userAuthMiddleware, async (req , res) =>{
+    try{
     const account = await AccountData.findOne({
         userId : req.userId
     })
@@ -14,10 +15,17 @@ router.get('/balance' ,userAuthMiddleware, async (req , res) =>{
     res.json({
         balance : account.balance
     })
+
+}catch(err){
+    console.log(err);
+    
+}
 } )
 
 
 router.post('/transfer' , userAuthMiddleware , async (req,res)=>{
+    try{
+
     const session = await mongoose.startSession();
 
      session.startTransaction();
@@ -51,10 +59,13 @@ router.post('/transfer' , userAuthMiddleware , async (req,res)=>{
      await AccountData.updateOne({userId:to},{$inc:{balance:amount}}).session(session)
 
      await session.commitTransaction();
-     res.status(200).json({
+    return res.status(200).json({
         msg:"Transfer completed"
-     })
-
+     })  
+      }catch(err){
+        console.log("error in transiction " ,err);
+        
+    }
 
 
 })

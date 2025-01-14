@@ -1,29 +1,28 @@
-import express from 'express';
-import rootRouter from './Routes/index.js'
-import 'dotenv/config'
-import cors from 'cors';
+import { app } from './app.js'
+import connectDb from "./db/index.js"
+
+import dotenv from 'dotenv'
+dotenv.config({
+    path:"./.env"
+})
+ 
+
 
 
 console.log(process.env.MOGODB_URI )
 
-
-const app = express();
-
-app.use(cors({ origin: '*' }));
-
-app.use(express.json());
-
-
-
-app.use('/api/v1' , rootRouter)
-
-app.get('/',(req, res)=>{
-    res.json({
-        msg:"backend is working well"
+connectDb()
+.then(()=>{
+    app.listen(process.env.PORT || 3000 , ()=>{
+        console.log(`our app is running on the port ${process.env.PORT || 3000}`);
+        
     })
 })
-
-app.listen(process.env.PORT || 3000 , ()=>{
-    console.log("our app is running on the port 3000");
+.catch((err)=>{
+    console.log("Error in the db connection " , err);
     
 })
+
+
+
+
