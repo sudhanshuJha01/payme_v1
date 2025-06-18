@@ -3,11 +3,11 @@ import mongoose from "mongoose"
 
 const connectDb = async ()=>{
     try {
-        mongoose.connect(`${process.env.MOGODB_URI}/paymetApp`)
-    
+       const connectionInstance =  await mongoose.connect(process.env.MOGODB_URI)
+       console.log("DB hosted on ", connectionInstance?.connection?.host);
+       
     } catch (error) {
-            console.log(`Error in the connection with dataBase ${error}` )
-            
+            console.log(`Error in the connection with dataBase ${error}` )  
     }
 }
 

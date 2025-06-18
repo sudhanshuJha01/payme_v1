@@ -5,7 +5,10 @@ import cors from 'cors';
 
 const app = express();
 
-app.use(cors({ origin: '*' }));
+app.use(cors({
+    origin:process.env.FRONTEND_URI,
+    credentials:true
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true , limit:"16kb"}))
@@ -17,9 +20,8 @@ app.use('/api/v1' , rootRouter)
 
 
 
-
 //test
-app.get('/',(req, res)=>{
+app.get('/test',(req, res)=>{
     res.json({
         msg:"backend is working well"
     })
