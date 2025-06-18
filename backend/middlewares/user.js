@@ -11,6 +11,7 @@ export const userAuthMiddleware =async (req, res, next) => {
     {
     const authHeader = req.headers.authorization;
 
+        
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(403).json({
             msg: "Authorization header is missing or incorrect!",
@@ -18,7 +19,6 @@ export const userAuthMiddleware =async (req, res, next) => {
     }
 
     const token = authHeader.replace("Bearer ","");
-
         const decoded = jwt.verify(token, jwt_secret);
         req.userId = decoded.userId;
         next();

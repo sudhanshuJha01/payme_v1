@@ -7,7 +7,7 @@ const userRoute = Router();
 
 userRoute.post('/user/signup' , register)
 userRoute.post('/user/signin' , userSignin)
-userRoute.get('/user//bulk' ,userAuthMiddleware, getAllUser)
+userRoute.get('/user/bulk' ,userAuthMiddleware, getAllUser)
 userRoute.get('/user/me' , getMe)
 
 export default userRoute;

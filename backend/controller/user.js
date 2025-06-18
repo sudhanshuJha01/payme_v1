@@ -2,7 +2,6 @@ import {User } from "../models/user.model.js";
 import { AccountData } from "../models/account.model.js";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
-import { userAuthMiddleware } from "../middlewares/user.js";
 import bcrypt from 'bcryptjs'
 
 const jwt_secret=process.env.JWT_SECRET
@@ -179,19 +178,20 @@ export const getMe = async(req , res)=>{
       try {
         const token = req.body.token;
         const decode = jwt.verify(token ,jwt_secret);
-        const result = await User.findById(decode.userId)
+        const user = await User.findById(decode.userId)
     
-          return  res.json({
+          return  res.status(202).json({
                 success:true,
-                fullname:result.fullname,
-                email:result.email,
+                fullname:user.fullname,
+                email:user.email,
                 msg:"user is registed"
             })
         
 }catch(err){
     console.log("error in meVerify" , err);
-    return res.json({
-        success:false
+    return res.status(502).json({
+        success:false,
+        msg:"server error to get self user"
     })
 }
 }

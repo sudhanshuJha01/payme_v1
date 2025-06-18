@@ -4,8 +4,17 @@ import { Transaction } from "../models/transactions.model.js";
 
 export const getBalance=async (req , res)=>{
     try{
-    const account = await AccountData.findById(req.userId)
+      const account = await AccountData.findOne({
+        userId : req.userId
+    })
 
+        if(!account){
+            return res.status(403).json({
+                success:false,
+                msg:"account balance not able to fetch"
+            })
+        }
+        
     res.status(200).json({
         success:true,
         balance : account.balance
