@@ -1,27 +1,20 @@
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
-    userName:{
+    email:{
      type:String,
      required:true,
-     unique:true,
+     unique:[true,"email should be unique"],
      trim:true,
-     lowecase:true,
+     lowecase:[true,"email should be in lower case"],
      minLength:3,
      maxLength:50
     },
-    firstName:{
+    fullname:{
      type:String,
      required:true,
      trim:true,
      minLength:3,
-     maxLength:50
-    },
-    lastName:{
-     type:String,
-     required:true,
-     trim:true,
-     minLength:2,
      maxLength:50
     },
     password:{
@@ -31,29 +24,8 @@ const UserSchema = new mongoose.Schema({
      minLength:6,
      maxLength:50
     }
- 
- 
  },{timestamps:true});
 
- const User = mongoose.model("User" , UserSchema);
-
-
- //Account model
+export const User = mongoose.model("User" , UserSchema)
  
  
- const AccountSchema = new mongoose.Schema({
-     userId:{
-         type:mongoose.Schema.Types.ObjectId,
-         ref:User,
-         required:true
-     },
-     balance:{
-         type:Number,
-         required:true
-     }
- },{timestamps:true})
- 
- const AccountData = mongoose.model("AccountData",AccountSchema);
- 
-
- export {User , AccountData}

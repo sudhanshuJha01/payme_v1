@@ -1,33 +1,33 @@
 import { Router } from "express";
-import { AccountData, User } from "../models/user.model.js";
+import {User } from "../models/user.model.js";
+import { AccountData } from "../models/account.model.js";
+import { Transaction } from "../models/transactions.model.js";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { userAuthMiddleware } from "../middlewares/user.js";
+import bycrpt from 'bcryptjs'
 
 const router = Router();
 
-export const jwt_secret = `${process.env.JWT_SECRET}`
+export const jwt_secret = process.env.JWT_SECRET
 
 
 const userSingUpInput = z.object({
-  userName: z.string().email(),
-  firstName: z.string().min(3),
-  lastName: z.string().min(3),
+  email: z.string().email(),
+  fullname: z.string().min(3),
   password: z.string().min(6),
 });
 
 
 router.post("/signup", async (req, res) => {
  try{ 
-  const userName = req.body.userName;
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const fullname = req.body.firstName;
   const password = req.body.password;
 
   const userData = {
-    userName,
-    firstName,
-    lastName,
+    email,
+    fullname,
     password,
   };
 
@@ -39,7 +39,7 @@ router.post("/signup", async (req, res) => {
   }
 
   const userExist = await User.findOne({
-    userName
+    email
   });
 
   if (userExist) {
