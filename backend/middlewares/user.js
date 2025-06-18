@@ -1,7 +1,12 @@
-import jwt from "jsonwebtoken";
-import { jwt_secret } from "../Routes/userRouter.js";
+import jwt from "jsonwebtoken"
+import dotenv from 'dotenv'
+dotenv.config({
+    path:"./.env"
+})
 
-export const userAuthMiddleware = (req, res, next) => {
+const jwt_secret=process.env.JWT_SECRET
+
+export const userAuthMiddleware =async (req, res, next) => {
     try
     {
     const authHeader = req.headers.authorization;
@@ -20,8 +25,9 @@ export const userAuthMiddleware = (req, res, next) => {
 
 }catch(err){
     console.error("Error in the header verification:", err);
-    return res.status(401).json({
-        msg: "Token is not valid!",
+    return res.status(501).json({
+        success:false,
+        msg: "server side token error",
     });
 }
 };

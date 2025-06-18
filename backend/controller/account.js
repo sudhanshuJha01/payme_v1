@@ -1,30 +1,28 @@
-import { Router } from "express";
-import  {userAuthMiddleware}  from "../middlewares/user.js";
 import mongoose from "mongoose";
-import { AccountData } from "../models/user.model.js";
+import { AccountData } from "../models/account.model.js";
+import { Transaction } from "../models/transactions.model.js";
 
-const router = Router();
-
-
-router.get('/balance' ,userAuthMiddleware, async (req , res) =>{
+export const getBalance=async (req , res)=>{
     try{
-    const account = await AccountData.findOne({
-        userId : req.userId
-    })
+    const account = await AccountData.findById(req.userId)
 
-    res.json({
+    res.status(200).json({
+        success:true,
         balance : account.balance
     })
 
 }catch(err){
     console.log(err);
-    
+    return res.status(500).json({
+        success:false,
+        msg:"balanced account fetched unsuccessfull"
+    })
 }
-} )
+}
 
 
-router.post('/transfer' , userAuthMiddleware , async (req,res)=>{
-    try{
+export const transferMoney = async (req , res)=>{
+        try{
 
     const session = await mongoose.startSession();
 
@@ -66,7 +64,6 @@ router.post('/transfer' , userAuthMiddleware , async (req,res)=>{
         console.log("error in transiction " ,err);
         
     }
+}
 
 
-})
-export default router;

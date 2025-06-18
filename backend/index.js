@@ -1,24 +1,51 @@
-import { app } from './app.js'
-import connectDb from "./db/index.js"
-import dotenv from 'dotenv'
+import express from 'express'
+import cors from 'cors';
+import dotenv from 'dotenv'       
+import userRoute from './Routes/user.routes';
+import accountRoute from './Routes/accounts.routes';
+import mongoose from "mongoose";
 
 dotenv.config({
     path:"./.env"
 })
- 
+
+const app = express();
+
 const PORT = process.env.PORT
 
-connectDb()
+app.use(cors({
+    origin:process.env.FRONTEND_URI,
+    credentials:true
+}));
+
+
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded());
+
+
+mongoose.connect(process.env.MOGODB_URI)
 .then(()=>{
-    app.listen(PORT || 3000 , ()=>{
-        console.log(`our app is running on the port ${PORT || 3000}`);
-        console.log("db is connected ... ");
+    console.log("database connection succesfull ");
+})
+.catch(err=>(
+    console.log("error in db connection " , err)
+))
+
+//routes
+app.use('/api/v2' , userRoute)
+app.use('/api/v2' , accountRoute)
+
+
+//test
+app.get('/test',(req, res)=>{
+    res.json({
+        msg:"backend is working well"
     })
 })
-.catch((err)=>{
-    console.log("Error in the db connection " , err);
+
+app.listen(PORT || 3000 , ()=>{
+    console.log(`our app is running on the port ${PORT || 3000}`);
 })
-
-
 
 

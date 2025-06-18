@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import {User} from "./user.model.js"
+import { Transaction } from "./transactions.model.js";
 
  const AccountSchema = new mongoose.Schema({
      userId:{
@@ -17,7 +19,7 @@ import mongoose from "mongoose";
         unique:true,
         index:true
     },
-    treansactionHistory:{
+    transactionHistory:{
         type:mongoose.Schema.Types.ObjectId,
         ref:Transaction,
     }
