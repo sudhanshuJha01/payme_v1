@@ -1,9 +1,9 @@
-import {User } from "../models/user.model.js";
-import { AccountData } from "../models/account.model.js";
+import {User } from "../models/user.js";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcryptjs'
-
+import { AccountData } from "../models/account.js";
+import { Transaction } from "../models/transactions.js";
 const jwt_secret=process.env.JWT_SECRET
 
 const userSingUpInput = z.object({
@@ -193,4 +193,30 @@ export const getMe = async(req , res)=>{
         msg:"server error to get self user"
     })
 }
+}
+
+export  const getAllTransaction = async(req,res)=>{
+  try {
+    const userId = req.userId
+
+      const transactions = await Transaction.find({fromId:userId})
+      if(!transactions){
+      return res.satus(402).json({
+        success:false,
+        msg:"user have not transaction history"
+      })}
+
+      res.status(202).json({
+        success:true,
+        msg:'succesfully fetched user transaction history',
+        transactions
+      })
+    }
+   catch (error) {
+    console.log("error in the transaction ", err);
+    return res.status(500).json({
+      success:false,
+      msg:"error in fetching user transaction history"
+    })
+  }
 }

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { AccountData } from "../models/account.model.js";
-import { Transaction } from "../models/transactions.model.js";
+import { AccountData } from "../models/account.js";
+import { Transaction } from "../models/transactions.js";
 
 export const getBalance=async (req , res)=>{
     try{
