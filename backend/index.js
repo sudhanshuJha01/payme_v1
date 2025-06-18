@@ -1,8 +1,9 @@
 import express from 'express'
 import cors from 'cors';
 import dotenv from 'dotenv'       
-import userRoute from './Routes/user.routes';
-import accountRoute from './Routes/accounts.routes';
+import userRoute from './Routes/user.routes.js';
+import accountRoute from './Routes/accounts.routes.js';
+import cookieParser from 'cookie-parser';
 import mongoose from "mongoose";
 
 dotenv.config({
@@ -18,10 +19,9 @@ app.use(cors({
     credentials:true
 }));
 
-
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended:true}));
 
 
 mongoose.connect(process.env.MOGODB_URI)
