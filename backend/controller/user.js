@@ -58,7 +58,6 @@ export const register = async(req , res)=>{
       const account = await AccountData.create({
         userId,
         balance: Math.floor(1 + Math.random() * 10000)/100,
-        accountNumber:120000000000 + Math.floor(Math.random()*1000000)
       });
     
       return res.status(200).json({

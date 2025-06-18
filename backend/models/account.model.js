@@ -12,13 +12,6 @@ import { Transaction } from "./transactions.model.js";
          type:Number,
          required:true
      },
-    accountNumber:{
-        type:Number,
-        required:true,
-        trim:true,
-        unique:true,
-        index:true
-    },
     transactionHistory:{
         type:mongoose.Schema.Types.ObjectId,
         ref:Transaction,

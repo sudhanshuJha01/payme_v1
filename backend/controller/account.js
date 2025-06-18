@@ -36,19 +36,22 @@ export const transferMoney = async (req , res)=>{
     const session = await mongoose.startSession();
 
      session.startTransaction();
-     const {amount , to } = req.body;
+     const {amount , to ,comment} = req.body;
 
      const account = await AccountData.findOne({userId : req.userId}).session(session);
 
-     if(amount<1){
+     if(amount<0){
         session.abortTransaction();
         return res.status(400).json({
+            success:false,
             msg:"Invalid transaction"
         })
      }
-     if(!account || account.balance<amount){
+
+     if(!account || account?.balance<amount){
         session.abortTransaction();
         return  res.status(400).json({
+            success:false,
             msg:"insufficient balance"
         })
      }
@@ -58,20 +61,33 @@ export const transferMoney = async (req , res)=>{
      if(!toAccount){
         session.abortTransaction();
         return res.status(400).json({
-            msg:"Invalid input"
+            success:false,
+            msg:"transfer user not found"
         })
      }
 
      await AccountData.updateOne({userId:req.userId},{$inc:{balance:-amount}}).session(session)
      await AccountData.updateOne({userId:to},{$inc:{balance:amount}}).session(session)
 
+     const transaction = new Transaction({
+        fromId:req.userId,
+        toId:to,
+        comment:comment || " uncommented tranfer"
+     })
+    const commitedTransaction = await transaction.save()
+
      await session.commitTransaction();
     return res.status(200).json({
-        msg:"Transfer completed"
+        success:true,
+        msg:"Transfer completed",
+        commitedTransaction
      })  
       }catch(err){
         console.log("error in transiction " ,err);
-        
+        return res.status(500).json({
+            success:false,
+            msg:"tranfer server error",
+        })
     }
 }
 
