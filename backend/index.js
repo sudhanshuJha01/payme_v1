@@ -3,7 +3,6 @@ import cors from 'cors';
 import dotenv from 'dotenv'       
 import userRoute from './Routes/user.routes.js';
 import accountRoute from './Routes/accounts.routes.js';
-import cookieParser from 'cookie-parser';
 import mongoose from "mongoose";
 
 dotenv.config({
