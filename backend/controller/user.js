@@ -50,7 +50,7 @@ export const register = async(req , res)=>{
      userData.password=hashedPassword;
     
       const user = new User(userData)
-    
+
       const newUser=await user.save()
     
       const userId = newUser._id;
@@ -148,28 +148,45 @@ export const getAllUser = async (req,res)=>{
   const users = await User.find({
     $or: [
       {
-        firstName: {
+        fullname: {
           $regex: filter,
+          $options: "i"
         },
       },
       {
-        lastName: {
+        email: {
           $regex: filter,
+          $options: "i"
         },
+        _id:{
+             $regex: filter,
+           $options: "i"
+        }
       },
     ],
   });
 
- return res.json({
+  if(!users){
+  return res.status(402).json({
+    success:false,
+    msg:"searching of the user failed"
+  })
+  }
+ return res.status(200).json({
+    success:true,
+    msg:"your searched user",
     user: users.map((user) => ({
+      accountNumber:user._id,
       email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      _id: user._id,
+      fullname: user.fullname,
     })),
   });
 }catch(error){
   console.log(err);
+  return res.status(502).json({
+    success:false,
+    msg:"server side searching of the user failed"
+  })
 }
 }
 
@@ -178,11 +195,18 @@ export const getMe = async(req , res)=>{
         const token = req.body.token;
         const decode = jwt.verify(token ,jwt_secret);
         const user = await User.findById(decode.userId)
+
+        if(!user){
+            return res.status(402).json({
+        success:false,
+        msg:"error to get self user"
+    })
+        }
     
           return  res.status(202).json({
                 success:true,
-                fullname:user.fullname,
-                email:user.email,
+                fullname:user?.fullname,
+                email:user?.email,
                 msg:"user is registed"
             })
         
