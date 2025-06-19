@@ -22,7 +22,7 @@ const App = () => {
         <Routes>
 
           <Route path={rootRoute} element={<Layout />}>
-            <Route index element={<Dashboard />} /> {/* Dashboard at `/` */}
+            <Route index element={<Dashboard />} /> 
             <Route path={profileRoute} element={<Profile />} />
             <Route path={sendRoute} element={<Send />} />
             <Route path={transactionRoute} element={<Transaction />} />

@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Footer = () => {
     return (
         <div className=' w-full rounded-xl text-xl  text-center bg-slate-950 text-white py-4 '>

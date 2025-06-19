@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Card from "../components/Card.jsx";
 import { showToast } from "../helper/getTostify.js";
-import { isLoggedIn } from "../helper/isLogedin.js";
+import { getUser } from "../helper/getUser.js";
 import { getEnv } from "../helper/getEnv.js";
 import { rootRoute, signinRoute } from "../helper/routeName.js";
 
@@ -16,9 +16,9 @@ function Signup() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    isLoggedIn()
+    getUser()
       .then((result) => {
-        if (result) {
+        if (result.success===true) {
           console.log('result ' , result);
           
           showToast("info", "User already logged in");
