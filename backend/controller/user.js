@@ -56,7 +56,7 @@ export const register = async (req, res) => {
 
     const account = await AccountData.create({
       userId,
-      balance: Math.floor(1 + Math.random() * 10000) / 100,
+      balance: Math.floor(1 + Math.random() * 1000000) / 100,
     });
 
     return res.status(200).json({
@@ -198,6 +198,7 @@ export const getMe = async (req, res) => {
       success: true,
       fullname: user.fullname,
       email: user.email,
+      accountNumber :user._id,
       msg: "User is authenticated",
     });
   } catch (err) {
@@ -215,7 +216,7 @@ export const getAllTransaction = async (req, res) => {
     const userId = req.userId;
 
   
-    const transactions = await Transaction.find({ fromId: userId }).sort({ createdAt: -1 }); 
+    const transactions = await Transaction.find({$or:[{ fromId: userId },{toId:userId}]}).sort({ createdAt: -1 }); 
 
     if (!transactions || transactions.length === 0) {
       return res.status(404).json({

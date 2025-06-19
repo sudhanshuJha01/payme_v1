@@ -1,38 +1,28 @@
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import { Outlet } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getUser } from "../helper/getUser";
+import { useUserStore } from "../store/userStore.js";
+
 
 const Layout = () => {
-  const [hostData, setHostData] = useState({
-    fullname: "",
-    email: "",
-  });
+  const setUser = useUserStore((state) => state.setUser);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getUser();
-        setHostData({
-          fullname: result?.fullname || "",
-          email: result?.email || "",
-        });
-      } catch (err) {
-        console.error("Error fetching user:", err);
+ useEffect(() => {
+    getUser().then((result) => {
+      if (result.success) {
+        setUser({ fullname: result.fullname, email: result.email ,accountNumber:result.accountNumber  });
       }
-    };
-
-    fetchData();
+    });
   }, []);
-
   
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#EEEEEE]">
-      <NavBar fullname={hostData.fullname} email={hostData.email} />
+    <div className="flex flex-col min-h-screen bg-slate-900]">
+      <NavBar />
 
-      <main className="flex-grow w-full p-2">
+      <main className=" w-full p-2">
         <Outlet />
       </main>
 

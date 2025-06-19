@@ -7,23 +7,27 @@ import {
   transactionRoute,
 } from "../helper/routeName.js";
 import { showToast } from "../helper/getTostify.js";
+import { useUserStore } from "../store/userStore.js";
 
-const NavBar = ({ fullname = "" }) => {
+const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const fullname = useUserStore((state) => state.fullname);
+  const clearUser = useUserStore((state) => state.clearUser);
   const navigate = useNavigate();
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
+    clearUser();
     showToast("info", "Logged out successfully");
     navigate("/signin");
   };
-  
+
   const displayName = fullname
     ? fullname.charAt(0).toUpperCase() + fullname.slice(1)
     : "User";
 
   return (
-    <>
+    <div>
       <div className="bg-slate-950 rounded-md shadow-2xl text-white flex justify-between items-center border-slate-800 border-2 p-4 w-full z-40">
         <Link to={rootRoute}>
           <h1 className="text-3xl font-bold ml-3">PayMe</h1>
@@ -41,7 +45,7 @@ const NavBar = ({ fullname = "" }) => {
       </div>
 
       {isMenuOpen && (
-        <ul className="absolute z-50 bg-slate-900 right-4 mt-2 w-48 p-2 text-white border border-slate-600 shadow-xl rounded-xl">
+        <ul className="absolute z-50 bg-slate-900 right-7 top-20 w-48 p-2 text-white border border-slate-600 shadow-xl rounded-xl">
           <li
             className="cursor-pointer hover:bg-slate-800 p-2 rounded"
             onClick={() => {
@@ -80,7 +84,7 @@ const NavBar = ({ fullname = "" }) => {
           </li>
         </ul>
       )}
-    </>
+    </div>
   );
 };
 
