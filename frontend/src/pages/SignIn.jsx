@@ -1,128 +1,115 @@
-import React, { useState, useEffect } from "react";
-import Card from "../components/Card";
-import Btn from "../components/Btn";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import Card from "../components/Card.jsx";
+import { showToast } from "../helper/getTostify.js";
+import { isLoggedIn } from "../helper/isLogedin.js";
+import { getEnv } from "../helper/getEnv.js";
+import { rootRoute, signupRoute } from "../helper/routeName.js";
+
 function SignIn() {
-  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(0);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    axios
-      .post(
-        "https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/me",
-        { token }
-      )
-      .then((response) => {
-        if (response.data.success) {
-          navigate("/dashboard");
-        } else {
-          navigate("/signin");
+    isLoggedIn()
+      .then((result) => {
+        if (result) {
+          showToast("info", "User already logged in");
+          navigate(rootRoute);
+          return
         }
       })
-      .catch((error) => {
-        console.log("Error in the signup navigator", error);
+      .catch(() => {
+        showToast("error", "Error checking login status");
       });
-  }, [token]);
+  }, []);
 
-  const handleLogin = async () => {
+
+  const handleSignIn = async () => {
+    if (!email || !password) {
+      return showToast("error", "Please fill all the fields");
+    }
+
     try {
+      setLoading(true);
+
       const response = await axios.post(
-        "https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/user/signin",
-        {
-          userName,
-          password,
-        }
+        `${getEnv("VITE_BACKEND_URI")}/user/signin`,
+        { email, password }
       );
-      console.log(response);
-      setLoading(1);
-      localStorage.setItem("token", response.data.token);
-      navigate("/dashboard");
+
+      const { token, success, msg } = response.data;
+
+      if (success && token) {
+        localStorage.setItem("token", token);
+        showToast("success", "Login successful");
+        navigate(rootRoute);
+      } else {
+        showToast("error", msg || "Login failed");
+      }
     } catch (error) {
-      console.log("Error in signin", error);
-      setLoading(-1);
-      setUserName("");
+      const msg = error?.response?.data?.msg || "Something went wrong";
+      showToast("error", msg);
+      setEmail("");
       setPassword("");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleGuest = async () => {
-    try {
-      const response = await axios.post(
-        "https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/user/signin",
-        {
-          userName: "guest@gmail.com",
-          password: "1234567",
-        }
-      );
-      console.log(response);
-      setLoading(1);
-      localStorage.setItem("token", response.data.token);
-      navigate("/dashboard");
-    } catch (error) {
-      console.log("Error in signin", error);
-      setLoading(-1);
-      setUserName("");
-      setPassword("");
-    }
-  };
   return (
-    <>
-      <div className="absolute right-0 mr-12 p-3">
-        <Btn onPress={handleGuest} label={"Continue as guest ➡️"} />
-      </div>
+    <div>
       <Card>
-        <h1 className="text-4xl mt-12">Sign In</h1>
+        <h1 className="text-4xl font-bold text-white text-center border-1 border-amber-50 p-2 px-5 rounded-xl">
+          PayMe
+        </h1>
+        <h1 className="text-4xl">Sign In</h1>
         <p className="text-lg text-center">
-          Enter your Information to access your account
+          Enter your information to access your account
         </p>
+
         <div>
           <h2>Email</h2>
           <input
-            onChange={(e) => {
-              setUserName(e.target.value);
-              setLoading(0);
-            }}
-            className="px-2 rounded-md py-0.5 w-64 text-black font-normal outline-none"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="px-2 rounded-md py-0.5 w-64 font-normal outline-hidden border-1 border-amber-50 text-white"
             type="text"
             placeholder="demo@gmail.com"
           />
         </div>
+
         <div>
           <h2>Password</h2>
           <input
+            type="password"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="px-2 rounded-md py-0.5 w-64 text-black font-normal outline-none"
-            type="text"
-            placeholder="Password"
+            className="px-2 rounded-md py-0.5 w-64 font-normal outline-hidden border-1 border-amber-50 text-white"
+            placeholder="Enter your password..."
           />
         </div>
+
         <button
-          onClick={handleLogin}
-          className="text-xl bg-black p-2 rounded-lg border-slate-300 border-2 text-slate-300"
+          onClick={handleSignIn}
+          disabled={loading}
+          className="text-xl bg-black p-2 rounded-lg border-slate-300 border-2 text-slate-300 mt-2 disabled:opacity-50"
         >
-          Sign In
+          {loading ? "Signing In..." : "Sign In"}
         </button>
-        <p className="text-sm">
-          Do not have an account ?
-          <Link to={"/signup"}>
-            {" "}
-            <span className="underline">register</span>{" "}
-          </Link>{" "}
+
+        <p className="text-sm mt-2">
+          Do not have an account?
+          <Link to={signupRoute}>
+            <span className="underline text-blue-300 ml-1">Register</span>
+          </Link>
         </p>
       </Card>
-      <div className="text-white text-2xl text-center">
-        {loading == 1 ? (
-          <span>Loading......</span>
-        ) : loading == -1 ? (
-          <span>Enter valid Email and password </span>
-        ) : null}
-      </div>
-    </>
+    </div>
   );
 }
 

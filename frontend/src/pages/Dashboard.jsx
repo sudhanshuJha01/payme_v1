@@ -18,7 +18,7 @@ const Dashboard = () => {
     if (token) {
       axios
         .post(
-          "https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/me",
+          "http://localhost:8080/api/v2/me",
           { token }
         )
         .then((response) => {
@@ -26,7 +26,7 @@ const Dashboard = () => {
             setHost({
               firstName: response.data.firstName,
               lastName: response.data.lastName,
-              userName: response.data.userName,
+              email: response.data.email,
             });
           } else {
             navigate("/signin");
@@ -44,7 +44,7 @@ const Dashboard = () => {
     if (token) {
       axios
         .get(
-          "https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/user/bulk/?filter=" +
+          "http://localhost:8080/api/v2/user/bulk/?filter=" +
             filter,
           {
             headers: {
@@ -65,7 +65,7 @@ const Dashboard = () => {
     if (token) {
       axios
         .get(
-          "https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/accounts/balance",
+          "http://localhost:8080/api/v2/accounts/balance",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -96,13 +96,13 @@ const Dashboard = () => {
             onChange={(e) => setFilter(e.target.value.toLowerCase())}
             type="text"
             placeholder="search user..."
-            className="w-full mb-3 p-1.5 rounded-md px-3 outline-none text-black text-xl"
+            className="w-full mb-3 p-1.5 rounded-md px-3 outline-hidden text-black text-xl"
           />
           <ul>
             {users &&
               users.map((user) => (
                 <li key={user._id}>
-                  {host.userName !== user?.username ? (
+                  {host.email !== user?.email ? (
                     <div className="flex justify-between items-center my-2 border-slate-800 border-2 p-4 rounded-md">
                       <div className="flex justify-between items-center gap-5">
                         <UserSymbol label={user.firstName[0].toUpperCase()} />

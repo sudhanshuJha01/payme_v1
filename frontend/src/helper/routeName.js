@@ -1,0 +1,6 @@
+export const rootRoute = "/"
+export const signupRoute = "/signup"
+export const signinRoute = "/signin"
+export const sendRoute = "/send"
+export const profileRoute = "/profile"
+export const transactionRoute = "/transaction"

@@ -1,27 +1,41 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Layout from "./Layout/Layout.jsx";
 import Signup from "./pages/SignUp.jsx";
 import SignIn from "./pages/SignIn.jsx";
-import Send from "./pages/Send";
+import Send from "./pages/Send.jsx";
 import Dashboard from "./pages/Dashboard";
-import Home from "./pages/Home";
 import Profile from "./pages/Profile.jsx";
+import Transaction from "./pages/Transaction.jsx";
+import {
+  rootRoute,
+  signinRoute,
+  signupRoute,
+  profileRoute,
+  sendRoute,
+  transactionRoute,
+} from "./helper/routeName.js";
+
 const App = () => {
   return (
-    <>
-      <div className="bg-slate-900 min-h-screen p-2">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home/>}/>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/send" element={<Send />} />
-            <Route path="/profile" element={<Profile />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </>
+    <div className="bg-slate-900 min-h-screen p-2">
+      <BrowserRouter>
+        <Routes>
+
+          <Route path={rootRoute} element={<Layout />}>
+            <Route index element={<Dashboard />} /> {/* Dashboard at `/` */}
+            <Route path={profileRoute} element={<Profile />} />
+            <Route path={sendRoute} element={<Send />} />
+            <Route path={transactionRoute} element={<Transaction />} />
+          </Route>
+
+      
+          <Route path={signinRoute} element={<SignIn />} />
+          <Route path={signupRoute} element={<Signup />} />
+
+          <Route path="*" element={<Navigate to={rootRoute} replace />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 };
 

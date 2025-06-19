@@ -22,7 +22,7 @@ function Send() {
   const handleTransaction = async () => {
     try {
       const response = await axios.post(
-        "https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/accounts/transfer",
+        "http://localhost:8080/api/v2/accounts/transfer",
         {
           to: id,
           amount: parseInt(amount),
@@ -51,7 +51,7 @@ function Send() {
   useEffect(() => {
     if (token) {
       axios
-        .get("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/accounts/balance", {
+        .get("http://localhost:8080/api/v2/accounts/balance", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -68,13 +68,13 @@ function Send() {
   useEffect(() => {
     if (token) {
       axios
-        .post("https://basiconlinetransactionwebapplicationproj.onrender.com/api/v1/me", { token })
+        .post("http://localhost:8080/api/v2/me", { token })
         .then((response) => {
           if (response.data.success) {
             setHost({
               firstName: response.data.firstName,
               lastName: response.data.lastName,
-              userName: response.data.userName,
+              email: response.data.email,
             });
           } else {
             navigate("/signin");
@@ -111,7 +111,7 @@ function Send() {
           value={amount}
           type="number"
           placeholder="Amount"
-          className="text-stone-950 p-1 px-2 rounded-lg outline-none"
+          className="text-stone-950 p-1 px-2 rounded-lg outline-hidden"
         />
         <Btn onPress={handleTransaction} label={"Initiate Transfer"} />
       </Card>
