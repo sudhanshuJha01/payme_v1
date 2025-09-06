@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Retro Blue & Pink Color Scheme with lighter background */
+    --background: 220 25% 14%;
+    --foreground: 315 100% 95%;
+    
+    --card: 220 20% 16%;
+    --card-foreground: 315 100% 95%;
+    
+    --popover: 220 20% 16%;
+    --popover-foreground: 315 100% 95%;
+    
+    --primary: 200 100% 65%;
+    --primary-foreground: 220 25% 8%;
+    
+    --secondary: 315 100% 70%;
+    --secondary-foreground: 220 25% 8%;
+    
+    --muted: 220 15% 25%;
+    --muted-foreground: 315 50% 75%;
+    
+    --accent: 280 100% 70%;
+    --accent-foreground: 220 25% 8%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 20% 98%;
+    
+    --border: 220 15% 30%;
+    --input: 220 15% 25%;
+    --ring: 200 100% 60%;
+    
+    --radius: 0.75rem;
+    
+    /* Custom retro gradients - more subtle */
+    --retro-gradient: linear-gradient(135deg, hsl(200 100% 65%), hsl(315 100% 70%));
+    --retro-glow: 0 0 15px hsl(200 100% 60% / 0.25);
+    --retro-text-glow: 0 0 8px hsl(315 100% 70% / 0.4);
+  }
+  
+  * {
+    border-color: hsl(var(--border));
+  }
+  
+  body {
+    background: hsl(var(--background));
+    background-image: 
+      radial-gradient(circle at 20% 80%, hsl(200 100% 60% / 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(315 100% 70% / 0.1) 0%, transparent 50%);
+    color: hsl(var(--foreground));
+    font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
+  }
+  
+  /* Retro scanlines effect */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 255, 0.03) 2px,
+      rgba(0, 255, 255, 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+}
+
+@layer components {
+  /* Retro button styles */
+  .retro-btn {
+    background: var(--retro-gradient);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: var(--retro-glow);
+  }
+  
+  .retro-btn::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: var(--retro-gradient);
+    z-index: -1;
+    border-radius: inherit;
+  }
+  
+  .retro-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      var(--retro-glow),
+      0 10px 30px hsl(200 100% 60% / 0.3);
+  }
+  
+  /* Retro text glow */
+  .retro-glow {
+    text-shadow: var(--retro-text-glow);
+  }
+  
+  /* Retro card with neon border */
+  .retro-card {
+    background: hsl(var(--card));
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .retro-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: var(--retro-gradient);
+    border-radius: inherit;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask-composite: xor;
+  }
+  
+  .retro-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px hsl(200 100% 60% / 0.2);
+  }
+  
+  /* Animated gradient text */
+  .gradient-text {
+    background: var(--retro-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease-in-out infinite;
+  }
+  
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  /* Floating animation */
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  /* Pulse glow animation */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px hsl(200 100% 60% / 0.3); }
+    50% { box-shadow: 0 0 40px hsl(200 100% 60% / 0.6); }
+  }
+}
