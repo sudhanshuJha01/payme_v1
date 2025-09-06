@@ -126,8 +126,8 @@
     background: var(--retro-gradient);
     border-radius: inherit;
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: xor;
     -webkit-mask-composite: xor;
+    mask-composite: xor;
   }
   
   .retro-card:hover {
