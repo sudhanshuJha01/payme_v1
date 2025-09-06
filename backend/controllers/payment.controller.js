@@ -1,6 +1,8 @@
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
 import { Account } from '../models/account.model.js';
+import { Transaction } from '../models/transaction.model.js';
+
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_API_KEY,
@@ -39,15 +41,16 @@ export const createOrder = async (req, res) => {
     }
 };
 
+
+
 /**
  * @desc Verify the Razorpay payment and add balance to the user's wallet
  */
 
-
 export const verifyPayment = async (req, res) => {
     try {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
-        const userId = req.userId; // From auth middleware
+        const userId = req.userId;
 
         if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
             return res.status(400).json({ success: false, message: "Payment details are required." });
@@ -61,15 +64,38 @@ export const verifyPayment = async (req, res) => {
             .digest('hex');
         
         if (expectedSignature === razorpay_signature) {
-           
+            
             const orderDetails = await razorpay.orders.fetch(razorpay_order_id);
             const amount = orderDetails.amount / 100;
 
+            // --- Start Transaction ---
+            const session = await mongoose.startSession();
+            session.startTransaction();
+            
+            try {
+                await Account.updateOne(
+                    { userId: userId },
+                    { $inc: { balance: amount } },
+                    { session }
+                );
+    
 
-            await Account.updateOne(
-                { userId: userId },
-                { $inc: { balance: amount } }
-            );
+                await Transaction.create([{
+                    senderId: userId,
+                    receiverId: userId,
+                    amount: amount,
+                    status: 'Success'
+                }], { session });
+
+                await session.commitTransaction();
+
+            } catch (error) {
+                await session.abortTransaction();
+                throw error; 
+            } finally {
+                session.endSession();
+            }
+            // --- End Transaction ---
 
             res.status(200).json({
                 success: true,
