@@ -7,6 +7,8 @@ import { useUserStore } from "../store/userStore";
 const Transaction = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [transactionsPersons , setTransactionsPerson] = useState({})
+
 
   const email = useUserStore((state) => state.email);
   
@@ -23,8 +25,7 @@ const Transaction = () => {
               Authorization: `Bearer ${token}`,
             },
           }
-        );
-        
+        ); 
         if (res.data.success===true) {
           setTransactions(res?.data?.transactions || []);
         } else {
@@ -42,7 +43,12 @@ const Transaction = () => {
   }, []);
 
   useEffect(()=>{
-    console.log('transaction ' , transactions);
+    setLoading(true)
+    try {
+      axios.get
+    } catch (error) {
+      
+    }
     
   },[transactions])
 
@@ -73,8 +79,8 @@ const Transaction = () => {
                 const isDebit = txn.fromId.email === email;
                 const type = isDebit ? "Debit" : "Credit";
                 const amount = txn.amount;
-                const from = txn.fromId?.fullname || "Unknown";
-                const to = txn.toId?.fullname || "Unknown";
+                const from = txn.fromId || "Unknown";
+                const to = txn.toId || "Unknown";
                 const comment = txn?.comment || "-";
                 const date = new Date(txn.createdAt).toLocaleString();
 
