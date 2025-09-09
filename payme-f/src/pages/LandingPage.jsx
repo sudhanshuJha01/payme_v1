@@ -1,201 +1,117 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
+import { Button } from '../components/ui/button';
+import { Card } from '../components/ui/card';
+
+// Helper component for the feature cards
+const FeatureCard = ({ title, children, icon }) => (
+    <div className="retro-card p-8 text-center rounded-2xl group">
+        <div className="mb-4 text-5xl text-secondary transform-gpu transition-transform duration-300 group-hover:scale-110">
+            {icon}
+        </div>
+        <h3 className="text-xl font-bold font-['Orbitron'] mb-2 retro-glow">
+            {title}
+        </h3>
+        <p className="text-muted-foreground font-['Space Mono']">{children}</p>
+    </div>
+);
 
 const LandingPage = () => {
     return (
-        <div className="bg-background text-foreground flex flex-col min-h-screen relative">
-            {/* Animated background elements */}
-            <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
-                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-            </div>
-
-            {/* --- Navbar --- */}
-            <header className="sticky top-0 z-50 w-full border-b border-primary/20 bg-background/80 backdrop-blur-md">
-                <div className="container h-16 flex items-center justify-between mx-auto px-4">
-                    <a href="/" className="font-bold text-2xl font-mono gradient-text">
-                        PAYME.EXE
-                    </a>
-                    <nav className="hidden md:flex gap-3">
-                        <Button 
-                            variant="ghost" 
-                            className="border border-primary/30 hover:bg-primary/10 hover:border-primary/60 transition-all duration-300"
-                        >
-                            LOGIN
-                        </Button>
-                        <Button className="retro-btn font-mono font-bold tracking-wider">
-                            SIGN UP
-                        </Button>
-                    </nav>
-                </div>
-            </header>
-
-            {/* --- Main Content --- */}
-            <main className="flex-grow relative z-10">
-                {/* Hero Section */}
-                <section className="text-center py-24 md:py-40 relative">
-                    <div className="container mx-auto px-4 relative">
-                        {/* Retro grid overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 bg-[length:50px_50px] bg-[linear-gradient(to_right,hsl(var(--primary)/0.1)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--primary)/0.1)_1px,transparent_1px)]"></div>
-                        
-                        <div className="relative z-10">
-                            <div className="inline-block mb-6">
-                                <span className="px-4 py-2 bg-primary/20 border border-primary/40 rounded-full text-sm font-mono tracking-wider text-primary animate-pulse">
-                                    ● SYSTEM ONLINE
-                                </span>
-                            </div>
-                            
-                            <h1 className="text-5xl md:text-7xl font-black gradient-text tracking-tighter font-mono leading-tight float">
-                                INSTANT PAYMENTS<br/>
-                                <span className="retro-glow">RETRO STYLE</span>
+        <div className="max-w-7xl mx-auto border-x border-border/40"> 
+            <div className="flex flex-col min-h-screen">
+                {/* --- Navbar --- */}
+                <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur">
+                    <div className="container h-20 flex items-center justify-between mx-auto px-6">
+                        <Link to="/" className="text-4xl font-black font-['Orbitron'] gradient-text"> 
+                            PAYME
+                        </Link>
+                        <nav className="hidden md:flex gap-2">
+                            <Button asChild variant="ghost" className="font-['Space Mono'] text-base">
+                                <Link to="/login">Login</Link>
+                            </Button>
+                            <Button asChild className="font-['Space Mono'] font-bold text-base text-primary-foreground bg-[--retro-gradient] hover:shadow-[var(--retro-glow)] transition-all">
+                                <Link to="/signup">Sign Up</Link>
+                            </Button> 
+                        </nav>
+                    </div>
+                </header>
+                
+                {/* --- Main Content --- */}
+                <main className="flex-grow">
+                    {/* Hero Section */}
+                    <section className="text-center py-24 md:py-40 relative overflow-hidden">
+                        <div className="container mx-auto px-4 relative z-10 animate-fade-in-up">
+                            <h1 className="text-5xl md:text-7xl font-black font-['Orbitron'] tracking-tighter gradient-text">
+                                Instant Payments for Everyone.
                             </h1>
-                            
-                            <p className="mt-8 text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground font-mono leading-relaxed">
-                                &gt; The most secure way to transfer digital currency<br/>
-                                &gt; Powered by quantum encryption protocols<br/>
-                                &gt; Initialize your wallet in 3.2 seconds
+                            <p className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground font-['Space Mono']">
+                                A seamless and secure way to send and receive money with a touch of modern nostalgia. Get started in seconds.
                             </p>
-                            
-                            <div className="mt-12 flex justify-center gap-6">
-                                <Button size="lg" className="retro-btn font-mono font-bold tracking-wider text-lg px-8 py-4 pulse-glow">
-                                    ▶ INITIALIZE ACCOUNT
-                                </Button>
-                                <Button 
-                                    variant="outline" 
-                                    size="lg" 
-                                    className="border-2 border-secondary/50 hover:border-secondary bg-transparent hover:bg-secondary/10 font-mono font-bold tracking-wider text-lg px-8 py-4"
-                                >
-                                    VIEW DEMO
+                            <div className="mt-10">
+                                <Button asChild size="lg" className="text-lg font-bold font-['Space Mono'] px-10 py-6 text-primary-foreground bg-[--retro-gradient] hover:shadow-[var(--retro-glow)] transition-all hover:-translate-y-1 pulse-glow">
+                                    <Link to="/signup">Create Your Free Account</Link>
                                 </Button>
                             </div>
-                            
-                            <div className="mt-10 flex items-center justify-center gap-4 text-sm text-muted-foreground font-mono">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                    SECURED BY RAZORPAY
+                        </div>
+                    </section>
+                
+                    <div className="text-center -mt-20 mb-24">
+                        <div className="inline-flex items-center gap-3 rounded-full border border-border/40 bg-card/50 px-4 py-2">
+                            <p className="text-sm font-['Space Mono'] text-muted-foreground">Secure payments powered by</p>
+                            <span className="font-bold text-lg text-primary">Razorpay</span>
+                        </div>
+                    </div>
+
+                    {/* How It Works Section */}
+                    <section className="py-20">
+                        <div className="container mx-auto px-4">
+                            <h2 className="text-4xl font-black font-['Orbitron'] text-center mb-16 gradient-text">How It Works</h2>
+                            <div className="grid md:grid-cols-3 gap-12 text-center font-['Space Mono'] text-lg">
+                                <div className="flex flex-col items-center">
+                                    <div className="w-20 h-20 rounded-full retro-card flex items-center justify-center text-3xl font-bold font-['Orbitron'] mb-6">1</div>
+                                    <p>Create your account and get a secure digital wallet.</p>
                                 </div>
-                                <div className="w-px h-4 bg-border"></div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                                    256-BIT ENCRYPTION
+                                <div className="flex flex-col items-center">
+                                    <div className="w-20 h-20 rounded-full retro-card flex items-center justify-center text-3xl font-bold font-['Orbitron'] mb-6">2</div>
+                                    <p>Add money to your wallet using our secure payment gateway.</p>
+                                </div>
+                                <div className="flex flex-col items-center">
+                                    <div className="w-20 h-20 rounded-full retro-card flex items-center justify-center text-3xl font-bold font-['Orbitron'] mb-6">3</div>
+                                    <p>Send money to anyone instantly or withdraw to your bank account.</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                {/* Features Section */}
-                <section className="py-24 relative">
-                    <div className="container mx-auto px-4">
-                        <div className="text-center mb-16">
-                            <h2 className="text-4xl font-black gradient-text font-mono mb-4">
-                                SYSTEM FEATURES
+                    {/* Features Section */}
+                    <section className="py-20 border-t border-border/40">
+                        <div className="container mx-auto px-4">
+                            <h2 className="text-4xl font-black font-['Orbitron'] text-center mb-16 gradient-text">
+                                Features
                             </h2>
-                            <p className="text-muted-foreground font-mono">
-                                &gt; Advanced payment protocols for the digital age
-                            </p>
-                        </div>
-                        
-                        <div className="grid md:grid-cols-3 gap-8">
-                            <Card className="retro-card bg-card/50 backdrop-blur-sm">
-                                <CardHeader className="text-center pb-4">
-                                    <div className="w-16 h-16 bg-primary/20 rounded-lg mx-auto mb-4 flex items-center justify-center border border-primary/40">
-                                        <span className="text-2xl text-primary font-bold">⚡</span>
-                                    </div>
-                                    <CardTitle className="font-mono text-primary tracking-wider">
-                                        INSTANT P2P TRANSFER
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="text-center">
-                                    <p className="text-muted-foreground font-mono leading-relaxed">
-                                        &gt; Lightning-fast transactions<br/>
-                                        &gt; Zero latency protocol<br/>
-                                        &gt; No processing fees
-                                    </p>
-                                </CardContent>
-                            </Card>
-                            
-                            <Card className="retro-card bg-card/50 backdrop-blur-sm">
-                                <CardHeader className="text-center pb-4">
-                                    <div className="w-16 h-16 bg-secondary/20 rounded-lg mx-auto mb-4 flex items-center justify-center border border-secondary/40">
-                                        <span className="text-2xl text-secondary font-bold">💳</span>
-                                    </div>
-                                    <CardTitle className="font-mono text-secondary tracking-wider">
-                                        WALLET TOP-UP
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="text-center">
-                                    <p className="text-muted-foreground font-mono leading-relaxed">
-                                        &gt; Multiple payment methods<br/>
-                                        &gt; UPI integration enabled<br/>
-                                        &gt; Secure card processing
-                                    </p>
-                                </CardContent>
-                            </Card>
-                            
-                            <Card className="retro-card bg-card/50 backdrop-blur-sm">
-                                <CardHeader className="text-center pb-4">
-                                    <div className="w-16 h-16 bg-accent/20 rounded-lg mx-auto mb-4 flex items-center justify-center border border-accent/40">
-                                        <span className="text-2xl text-accent font-bold">🏦</span>
-                                    </div>
-                                    <CardTitle className="font-mono text-accent tracking-wider">
-                                        BANK WITHDRAWAL
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="text-center">
-                                    <p className="text-muted-foreground font-mono leading-relaxed">
-                                        &gt; Direct bank transfers<br/>
-                                        &gt; Real-time processing<br/>
-                                        &gt; 24/7 availability
-                                    </p>
-                                </CardContent>
-                            </Card>
-                        </div>
-                        
-                        {/* Stats Section */}
-                        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                            <div className="space-y-2">
-                                <div className="text-3xl font-black gradient-text font-mono">99.9%</div>
-                                <div className="text-sm text-muted-foreground font-mono">UPTIME</div>
-                            </div>
-                            <div className="space-y-2">
-                                <div className="text-3xl font-black gradient-text font-mono">&lt;1s</div>
-                                <div className="text-sm text-muted-foreground font-mono">TRANSFER TIME</div>
-                            </div>
-                            <div className="space-y-2">
-                                <div className="text-3xl font-black gradient-text font-mono">256-BIT</div>
-                                <div className="text-sm text-muted-foreground font-mono">ENCRYPTION</div>
-                            </div>
-                            <div className="space-y-2">
-                                <div className="text-3xl font-black gradient-text font-mono">24/7</div>
-                                <div className="text-sm text-muted-foreground font-mono">SUPPORT</div>
+                            <div className="grid md:grid-cols-3 gap-8">
+                                <FeatureCard title="Instant P2P Transfers" icon="⚡️">
+                                    Send money to any Payme user in a flash. No waiting, no fees.
+                                </FeatureCard>
+                                <FeatureCard title="Easy Wallet Top-Up" icon="💳">
+                                    Add funds to your wallet securely using UPI, cards, and more.
+                                </FeatureCard>
+                                <FeatureCard title="Bank Withdrawals" icon="🏦">
+                                    Cash out your wallet balance directly to your bank account anytime.
+                                </FeatureCard>
                             </div>
                         </div>
-                    </div>
-                </section>
-            </main>
+                    </section>
+                </main>
 
-            {/* --- Footer --- */}
-            <footer className="border-t border-primary/20 relative z-10">
-                <div className="container py-8 text-center text-muted-foreground">
-                    <div className="font-mono text-sm space-y-2">
-                        <p>Developed by <span className="text-primary font-bold">Sudhanshu Jha</span></p>
-                        <p>
-                            Connect: 
-                            <a 
-                                href="YOUR_LINKEDIN_URL" 
-                                className="text-secondary hover:text-secondary/80 transition-colors ml-2 underline"
-                            >
-                                LinkedIn
-                            </a>
-                        </p>
-                        <div className="pt-4 text-xs opacity-70">
-                            © 2025 Payme - Simple Digital Payments
-                        </div>
+                {/* --- Footer --- */}
+                <footer className="border-t border-border/40">
+                    <div className="container py-6 text-center text-muted-foreground font-['Space Mono']">
+                        <p>Developed by Sudhanshu Jha | <a href="https://www.linkedin.com/in/sudhanshujha01/" className="text-secondary hover:text-primary transition-colors">LinkedIn</a></p>
                     </div>
-                </div>
-            </footer>
+                </footer>
+            </div>
         </div>
     );
 };

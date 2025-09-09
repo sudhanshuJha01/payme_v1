@@ -1,16 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import LandingPage from './pages/LandingPage.jsx'; 
+import SignupPage from './pages/SignupPage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
-// --- Placeholder Page Components ---
-// We will create these actual files next. For now, they are simple placeholders.
-const LoginPage = () => <div className="text-center p-8">Login Page</div>;
-const SignupPage = () => <div className="text-center p-8">Signup Page</div>;
+
+
 const DashboardPage = () => <div className="text-center p-8">Dashboard Page</div>;
 const NotFound = () => <div className="text-center p-8">404 - Page Not Found</div>;
 
-// --- Main App Layout ---
-// This component can be used to share a layout (like a Navbar) across multiple pages.
+
 const AppLayout = () => {
   return (
     <div>
@@ -33,6 +33,7 @@ function App() {
         {/* Routes for authentication */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         {/* Routes for the main application, nested under AppLayout */}
         <Route element={<AppLayout />}>
