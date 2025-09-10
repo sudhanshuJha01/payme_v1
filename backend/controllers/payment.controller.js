@@ -101,7 +101,7 @@ export const createWithdrawalLink = async (req, res) => {
             amount: parsedAmount * 100,
             currency: "INR",
             description: "Payme Wallet Withdrawal",
-            reference_id: userId.toString(), // We use this to identify the user in the webhook
+            reference_id: `${userId.toString()}_${Date.now()}`,
             expire_by: Math.floor(Date.now() / 1000) + 1200,
         };
 
