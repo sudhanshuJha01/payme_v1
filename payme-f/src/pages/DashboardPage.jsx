@@ -8,20 +8,21 @@ import toast, { Toaster } from 'react-hot-toast';
 import RecentTransactions from '../components/RecentTransactions';
 import AddMoneyDialog from '../components/AddMoneyDialog';
 import WithdrawDialog from '../components/WithdrawDialog';
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogDescription,
-    DialogFooter,
-} from "../components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "../components/ui/dialog";
 import { Avatar, AvatarFallback } from "../components/ui/avatar";
+import { Search, Send, Wallet } from 'lucide-react';
 
 const Balance = ({ value }) => (
-    <div>
-        <h2 className="text-lg font-semibold text-muted-foreground">Your Balance</h2>
-        <p className="text-4xl font-bold">₹ {value != null ? value.toFixed(2) : "Loading..."}</p>
+    <div className="bg-card/30 p-6 rounded-xl border border-border/50">
+        <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-primary/20 rounded-lg">
+                <Wallet className="h-5 w-5 text-primary" />
+            </div>
+            <h2 className="text-lg font-semibold text-muted-foreground">Your Balance</h2>
+        </div>
+        <p className="text-4xl font-bold">
+            ₹ {value != null ? value.toLocaleString('en-IN', { minimumFractionDigits: 2 }) : "0.00"}
+        </p>
     </div>
 );
 
@@ -33,8 +34,7 @@ const DashboardPage = () => {
     const [amount, setAmount] = useState("");
     const [isTransferring, setIsTransferring] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
-    const { user: currentUser } = useAuthStore();
-    const { accessToken } = useAuthStore();
+    const { accessToken, user: currentUser } = useAuthStore();
     const debounceTimeout = useRef(null);
 
     const fetchBalance = useCallback(async () => {
@@ -43,29 +43,26 @@ const DashboardPage = () => {
             const response = await api.get("/account/balance");
             setBalance(response.data.balance);
         } catch (error) {
-            toast.error("Could not fetch your balance.");
+            toast.error("Could not fetch balance.");
         }
     }, [accessToken]);
 
     useEffect(() => {
         fetchBalance();
     }, [fetchBalance]);
-  useEffect(() => {
+
+    useEffect(() => {
         if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
         if (searchQuery.trim() === "") {
             setUsers([]);
             setIsSearching(false);
             return;
         }
-
         setIsSearching(true);
         debounceTimeout.current = setTimeout(async () => {
             try {
                 const response = await api.get(`/user/search?filter=${searchQuery}`);
-                // --- ADDED FILTER LOGIC HERE ---
-                const filteredUsers = response.data.users.filter(
-                    user => user._id !== currentUser._id
-                );
+                const filteredUsers = response.data.users.filter(user => user._id !== currentUser._id);
                 setUsers(filteredUsers);
             } catch (error) {
                 toast.error("Failed to search for users.");
@@ -73,7 +70,6 @@ const DashboardPage = () => {
                 setIsSearching(false);
             }
         }, 500);
-
         return () => { if (debounceTimeout.current) clearTimeout(debounceTimeout.current); };
     }, [searchQuery, currentUser]);
 
@@ -81,10 +77,7 @@ const DashboardPage = () => {
         setIsTransferring(true);
         const toastId = toast.loading("Processing transfer...");
         try {
-            await api.post("/account/transfer", {
-                to: selectedUser._id,
-                amount: Number(amount),
-            });
+            await api.post("/account/transfer", { to: selectedUser._id, amount: Number(amount) });
             toast.success("Transfer successful!", { id: toastId });
             fetchBalance();
             setSelectedUser(null);
@@ -97,50 +90,60 @@ const DashboardPage = () => {
     };
 
     return (
-        <div className="animate-popup space-y-8">
+        <div className="animate-popup max-w-4xl mx-auto space-y-8">
             <Toaster position="top-center" />
-            <div className="flex items-center justify-between">
+            
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <Balance value={balance} />
-                <div className="flex gap-2">
+                <div className="flex w-full sm:w-auto gap-3">
                     <AddMoneyDialog onPaymentSuccess={fetchBalance} />
                     <WithdrawDialog onWithdrawSuccess={fetchBalance} />
                 </div>
             </div>
-            <Separator />
-            <div>
-                <h2 className="text-lg font-bold">Send Money</h2>
-                <Input
-                    type="text"
-                    placeholder="Search by name or email..."
-                    className="mt-2"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <div className="mt-4 space-y-2 min-h-[50px]">
-                    {isSearching ? (
-                        <p className="text-muted-foreground">Searching...</p>
-                    ) : users.length > 0 ? (
-                        users.map((user) => (
-                            <div key={user._id} className="flex items-center justify-between p-2 rounded-md hover:bg-card">
-                                <div className="flex items-center gap-4">
-                                    <Avatar><AvatarFallback>{user.fullname.charAt(0).toUpperCase()}</AvatarFallback></Avatar>
-                                    <div>
-                                        <p className="font-semibold">{user.fullname}</p>
-                                        <p className="text-sm text-muted-foreground">{user.email}</p>
+
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <div className="lg:col-span-3">
+                    <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Send className="h-5 w-5" /> Send Money</h2>
+                    <div className="bg-card/30 p-4 rounded-xl border border-border/50">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                type="text"
+                                placeholder="Search by name or email..."
+                                className="pl-10"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                        </div>
+                        <div className="mt-4 space-y-2 min-h-[60px]">
+                            {isSearching ? (
+                                <p className="text-center text-muted-foreground py-4">Searching...</p>
+                            ) : users.length > 0 ? (
+                                users.map((user) => (
+                                    <div key={user._id} className="flex items-center justify-between p-2 rounded-md hover:bg-card">
+                                        <div className="flex items-center gap-3">
+                                            <Avatar><AvatarFallback>{user.fullname.charAt(0).toUpperCase()}</AvatarFallback></Avatar>
+                                            <div>
+                                                <p className="font-semibold">{user.fullname}</p>
+                                                <p className="text-sm text-muted-foreground">{user.email}</p>
+                                            </div>
+                                        </div>
+                                        <Button size="sm" onClick={() => setSelectedUser(user)}>Send</Button>
                                     </div>
-                                </div>
-                                <Button onClick={() => setSelectedUser(user)}>Send Money</Button>
-                            </div>
-                        ))
-                    ) : searchQuery && (
-                        <p className="text-muted-foreground">No users found.</p>
-                    )}
+                                ))
+                            ) : searchQuery && (
+                                <p className="text-center text-muted-foreground py-4">No users found.</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="lg:col-span-2">
+                     <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
+                     <RecentTransactions />
                 </div>
             </div>
-            <Separator />
-            <RecentTransactions />
 
-            {/* Send Money Dialog (Modal) */}
             <Dialog open={!!selectedUser} onOpenChange={() => setSelectedUser(null)}>
                 <DialogContent className="sm:max-w-[425px] animate-popup">
                     <DialogHeader>
@@ -150,15 +153,12 @@ const DashboardPage = () => {
                     <div className="py-4">
                         <div className="flex items-center gap-4 mb-4">
                             <Avatar><AvatarFallback>{selectedUser?.fullname.charAt(0).toUpperCase()}</AvatarFallback></Avatar>
-                            <p className="font-semibold text-lg">{selectedUser?.fullname}</p>
+                            <div>
+                                <p className="font-semibold text-lg">{selectedUser?.fullname}</p>
+                                <p className="text-sm text-muted-foreground">{selectedUser?.email}</p>
+                            </div>
                         </div>
-                        <Input
-                            id="amount"
-                            type="number"
-                            placeholder="Enter amount"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                        />
+                        <Input id="amount" type="number" placeholder="Enter amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
                     </div>
                     <DialogFooter>
                         <Button onClick={handleTransfer} disabled={isTransferring || !amount || Number(amount) <= 0} className="w-full">

@@ -111,6 +111,13 @@
     -webkit-backdrop-filter: blur(2px) !important;
   }
 
+  /* 🔹 Custom dropdown styling for solid background */
+  .custom-dropdown {
+    background-color: hsl(220 20% 12%) !important;
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+  }
+
   /* 🔹 Popup / modal content box */
   .card, 
   .popover, 
@@ -137,6 +144,48 @@
     opacity: 1 !important;
     z-index: 9999 !important;
     animation: popup-in 0.3s ease-out forwards;
+  }
+
+  /* 🔹 Force right alignment for dropdown menus in header */
+  header [data-radix-popper-content-wrapper],
+  header [data-radix-portal] > div[role="menu"],
+  header .dropdown-menu,
+  header .dropdown-content,
+  header .popover-content {
+    right: 0 !important;
+    left: auto !important;
+    transform-origin: top right !important;
+  }
+
+  /* 🔹 Ensure dropdown positioning relative to trigger */
+  [data-radix-dropdown-trigger] + [data-radix-portal] [data-radix-popper-content-wrapper] {
+    right: 0 !important;
+    left: auto !important;
+  }
+
+  /* 🔹 Additional specificity for right alignment */
+  .header-dropdown,
+  header [data-align="end"] {
+    right: 0 !important;
+    left: auto !important;
+    transform-origin: top right !important;
+  }
+
+  /* 🔹 Global override for all dropdown positioning */
+  [data-radix-popper-content-wrapper] {
+    position: fixed !important;
+  }
+  
+  /* 🔹 Specific override for header dropdowns */
+  header [data-radix-popper-content-wrapper] {
+    transform: translateX(-100%) !important;
+  }
+
+  /* 🔹 Alternative approach - force right alignment for all dropdowns in header area */
+  .sticky.top-0 [data-radix-dropdown-content],
+  .sticky.top-0 [data-radix-popper-content-wrapper] {
+    right: 16px !important;
+    left: auto !important;
   }
 
   /* 🔹 Popup animation */
