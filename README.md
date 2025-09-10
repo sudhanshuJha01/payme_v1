@@ -3,7 +3,8 @@
 
 _A modern, secure, and intuitive peer-to-peer payment wallet built with the MERN stack and integrated with Razorpay for real-world transaction capabilities._
 
-**\[VIDEO/GIF DEMO HERE\]**_(Suggestion: Add a short screen recording showing the user flow: sign up, log in, send money, and withdraw.)_
+<img width="1708" height="958" alt="image" src="https://github.com/user-attachments/assets/2e9c980d-a52d-405f-b5c3-280a880ae82a" />
+
 
 ⭐ Features
 ----------
