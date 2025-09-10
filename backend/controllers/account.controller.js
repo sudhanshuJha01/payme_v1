@@ -7,7 +7,6 @@ import { User } from "../models/user.model.js";
 /**
  * @desc Get the balance of the logged-in user
  */
-
 export const getBalance = async (req, res) => {
     try {
         const account = await Account.findOne({ userId: req.userId });
@@ -35,11 +34,9 @@ export const getBalance = async (req, res) => {
 /**
  * @desc Transfer funds from the logged-in user to another user
  */
-
 export const transfer = async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
-
     try {
         const { amount, to } = req.body;
         const fromUserId = req.userId;
@@ -88,6 +85,7 @@ export const transfer = async (req, res) => {
                 receiverId: to,
                 amount: transferAmount,
                 status: "Success",
+                type: "transfer" // Set transaction type
             }],
             { session }
         );
@@ -133,8 +131,9 @@ export const getHistory = async (req, res) => {
         const transactions = await Transaction.find({
             $or: [{ senderId: userId }, { receiverId: userId }],
         })
-        .populate("senderId", "fullname")
-        .populate("receiverId", "fullname")
+
+        .populate("senderId", "fullname email")
+        .populate("receiverId", "fullname email")
         .sort({ createdAt: -1 });
 
         return res.status(200).json({

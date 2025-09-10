@@ -29,7 +29,7 @@ const SignupPage = () => {
         setIsLoading(true);
         const toastId = toast.loading('Creating account...');
         try {
-            const response = await axios.post('http://localhost:8080/api/user/register', formData);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/register`, formData);
             toast.success(response.data.message, { id: toastId });
             setShowOtpForm(true);
         } catch (error) {
@@ -44,7 +44,7 @@ const SignupPage = () => {
         setIsLoading(true);
         const toastId = toast.loading('Verifying OTP...');
         try {
-            const response = await axios.post('http://localhost:8080/api/user/verify-otp', {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/verify-otp`, {
                 email: formData.email,
                 otp: otp,
             });

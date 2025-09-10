@@ -4,13 +4,12 @@ import dotenv from 'dotenv';
 import userRoute from './Routes/user.routes.js';
 import accountRoute from './Routes/accounts.routes.js';
 import paymentRoute from './Routes/payment.routes.js'
-import payoutRoute from './Routes/payout.routes.js'
 import notificationRoute from './Routes/notification.routes.js'
+import webhookRoute from './Routes/webhook.routes.js';
 import mongoose from "mongoose";
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import expressMongoSanitize from 'express-mongo-sanitize';
-
 
 dotenv.config({
     path: "./.env"
@@ -50,8 +49,8 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use('/api/user', userRoute);
 app.use('/api/account', accountRoute);
 app.use('/api/payment', paymentRoute);
-app.use('/api/payout', payoutRoute);
 app.use('/api/notifications', notificationRoute);
+app.use('/api/webhook', webhookRoute);
 
 
 app.get('/test', (req, res) => {

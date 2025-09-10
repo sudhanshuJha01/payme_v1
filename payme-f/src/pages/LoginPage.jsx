@@ -29,7 +29,7 @@ const LoginPage = () => {
         const toastId = toast.loading('Signing in...');
 
         try {
-            const response = await axios.post('http://localhost:8080/api/user/login', formData, {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, formData, {
                 withCredentials: true 
             });
             

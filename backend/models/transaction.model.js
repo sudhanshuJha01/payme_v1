@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const transactionSchema = new mongoose.mongoose.Schema({
+const transactionSchema = new mongoose.Schema({
     senderId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -18,6 +18,11 @@ const transactionSchema = new mongoose.mongoose.Schema({
     status: {
         type: String,
         enum: ['Success', 'Failed'],
+        required: true
+    },
+    type: {
+        type: String,
+        enum: ['deposit', 'withdrawal', 'transfer'],
         required: true
     }
 }, {

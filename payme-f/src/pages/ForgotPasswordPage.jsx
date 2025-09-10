@@ -26,7 +26,7 @@ const ForgotPasswordPage = () => {
         const toastId = toast.loading('Sending OTP...');
 
         try {
-            await axios.post('http://localhost:8080/api/user/forgot-password', { email });
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/forgot-password`, { email });
             toast.success('OTP sent to your email.', { id: toastId });
             setStep(2);
         } catch (error) {
@@ -42,7 +42,7 @@ const ForgotPasswordPage = () => {
         const toastId = toast.loading('Verifying OTP...');
 
         try {
-            await axios.post('http://localhost:8080/api/user/verify-reset-otp', { email, otp });
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/verify-reset-otp`, { email, otp });
             toast.success('OTP Verified.', { id: toastId });
             setStep(3);
         } catch (error) {
@@ -58,7 +58,7 @@ const ForgotPasswordPage = () => {
         const toastId = toast.loading('Resetting password...');
 
         try {
-            await axios.post('http://localhost:8080/api/user/reset-password', { email, otp, newPassword });
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/reset-password`, { email, otp, newPassword });
             toast.success('Password reset successfully! Please log in.', { id: toastId });
             setTimeout(() => navigate('/login'), 2000);
         } catch (error) {

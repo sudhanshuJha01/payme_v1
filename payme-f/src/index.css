@@ -1,44 +1,153 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @import "tailwindcss";
-@import "tw-animate-css";
+
+@theme {
+  --color-background: 240 10% 3.9%;
+  --color-foreground: 210 40% 98%;
+  --color-card: 240 3.7% 15.9%;
+  --color-card-foreground: 210 40% 98%;
+  --color-popover: 240 10% 3.9%;
+  --color-popover-foreground: 210 40% 98%;
+  --color-primary: 210 40% 98%;
+  --color-primary-foreground: 240 5.9% 10%;
+  --color-secondary: 240 3.7% 15.9%;
+  --color-secondary-foreground: 210 40% 98%;
+  --color-muted: 240 3.7% 15.9%;
+  --color-muted-foreground: 240 5% 64.9%;
+  --color-accent: 210 40% 98%;
+  --color-accent-foreground: 240 5.9% 10%;
+  --color-destructive: 0 62.8% 30.6%;
+  --color-destructive-foreground: 210 40% 98%;
+  --color-border: 240 3.7% 15.9%;
+  --color-input: 240 3.7% 15.9%;
+  --color-ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+}
+
 @layer base {
-  :root {
-    /* --- Minimalist Dark Theme --- */
-    --background: 240 10% 3.9%;
-    --foreground: 210 40% 98%;
-    --card: 240 3.7% 15.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 210 40% 98%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 62.8% 30.6%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --radius: 0.5rem;
+  * {
+    border-color: hsl(var(--color-border));
+  }
+
+  html {
+    background-color: hsl(220 28% 8%) !important;
+    color: hsl(210 40% 98%) !important;
   }
 
   body {
-    /* Use standard CSS to apply the variables directly */
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    background-color: hsl(220 28% 8%) !important;
+    color: hsl(210 40% 98%) !important;
     font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+
+  #root {
+    background-color: hsl(220 28% 8%) !important;
+    color: hsl(210 40% 98%) !important;
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  /* Ensure all children of root also inherit the background */
+  #root > * {
+    background-color: transparent;
+  }
+
+  /* Force background on any potential white containers */
+  div, main, section, article {
+    background-color: inherit;
   }
 }
 
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
-}
+@layer components {
+  /* 🔹 Primary Button Styles (Shadcn + normal) */
+  .btn, 
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"] {
+    @apply text-white border border-white rounded-lg font-semibold;
+    background: linear-gradient(135deg, hsl(192 95% 45%), hsl(230 70% 50%));
+    transition: all 0.3s ease-in-out !important;
+  }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+  /* Hover state */
+  .btn:hover, 
+  button:hover,
+  [role="button"]:hover {
+    background: linear-gradient(135deg, hsl(192 95% 38%), hsl(230 70% 42%));
+    border-color: white !important;
+    color: white !important;
+  }
+
+  /* Outline variant */
+  .btn-outline, 
+  .btn-outline-primary,
+  button[variant="outline"] {
+    background: transparent !important;
+    color: white !important;
+    border: 1px solid white !important;
+  }
+
+  .btn-outline:hover, 
+  .btn-outline-primary:hover,
+  button[variant="outline"]:hover {
+    background: white !important;
+    color: hsl(220 28% 8%) !important;
+  }
+
+  /* 🔹 Overlay (dim background for popups) */
+  .modal-overlay,
+  .dialog-overlay,
+  [data-radix-overlay],
+  .fixed.inset-0:not(.modal-content):not(.dialog-content),
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(2px) !important;
+    -webkit-backdrop-filter: blur(2px) !important;
+  }
+
+  /* 🔹 Popup / modal content box */
+  .card, 
+  .popover, 
+  .dropdown-menu,
+  .modal-content,
+  .dialog-content,
+  .sheet-content,
+  .popover-content,
+  [data-radix-popper-content-wrapper],
+  [data-radix-portal] > div[role="menu"],
+  [data-radix-portal] > div[role="dialog"],
+  [data-radix-portal] > div[role="alertdialog"],
+  [role="menu"],
+  [role="dialog"]:not([data-radix-overlay]),
+  [role="alertdialog"]:not([data-radix-overlay]),
+  .dropdown-content,
+  .radix-dropdown-content,
+  .radix-popover-content {
+    background-color: hsl(220 20% 12%) !important; /* Solid dark */
+    color: hsl(210 40% 98%) !important;
+    border: 1px solid hsl(220 15% 20%) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
+    border-radius: 10px !important;
+    opacity: 1 !important;
+    z-index: 9999 !important;
+    animation: popup-in 0.3s ease-out forwards;
+  }
+
+  /* 🔹 Popup animation */
+  @keyframes popup-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.95) translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
 }
