@@ -6,7 +6,6 @@ const api = axios.create({
     withCredentials: true,
 });
 
-// Request Interceptor: Adds the access token to every outgoing request
 api.interceptors.request.use(
     (config) => {
         const token = useAuthStore.getState().accessToken;
@@ -18,37 +17,56 @@ api.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// Response Interceptor: Handles expired access tokens
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+    failedQueue.forEach(prom => {
+        if (error) {
+            prom.reject(error);
+        } else {
+            prom.resolve(token);
+        }
+    });
+    failedQueue = [];
+};
+
 api.interceptors.response.use(
-    (response) => response, // If the response is successful, just return it
+    (response) => response,
     async (error) => {
         const originalRequest = error.config;
-        const { logout, login } = useAuthStore.getState();
-
-        // If the error is 401 and it's not a retry request
         if (error.response.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true; // Mark it as a retry to prevent infinite loops
-
-            try {
-                // Call the refresh-token endpoint
-                const { data } = await api.post('/user/refresh-token');
-                
-                // Update the store with the new access token
-                const { user } = useAuthStore.getState();
-                login(user, data.accessToken);
-                
-                // Update the header of the original request with the new token
-                originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
-                
-                // Retry the original request
-                return api(originalRequest);
-                
-            } catch (refreshError) {
-                // If the refresh token is also invalid, log the user out
-                logout();
-                window.location.href = '/login'; // Redirect to login page
-                return Promise.reject(refreshError);
+            if (isRefreshing) {
+                return new Promise(function(resolve, reject) {
+                    failedQueue.push({ resolve, reject });
+                }).then(token => {
+                    originalRequest.headers['Authorization'] = 'Bearer ' + token;
+                    return axios(originalRequest);
+                }).catch(err => {
+                    return Promise.reject(err);
+                });
             }
+
+            originalRequest._retry = true;
+            isRefreshing = true;
+
+            return new Promise(function (resolve, reject) {
+                api.post('/user/refresh-token')
+                    .then(({ data }) => {
+                        const { user } = useAuthStore.getState();
+                        useAuthStore.getState().login(user, data.accessToken);
+                        originalRequest.headers['Authorization'] = 'Bearer ' + data.accessToken;
+                        processQueue(null, data.accessToken);
+                        resolve(axios(originalRequest));
+                    })
+                    .catch((err) => {
+                        processQueue(err, null);
+                        useAuthStore.getState().logout();
+                        window.location.href = '/login';
+                        reject(err);
+                    })
+                    .finally(() => { isRefreshing = false });
+            });
         }
         return Promise.reject(error);
     }

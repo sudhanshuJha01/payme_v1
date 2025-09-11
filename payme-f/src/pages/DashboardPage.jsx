@@ -149,26 +149,27 @@ const DashboardPage = () => {
     const { accessToken, user: currentUser } = useAuthStore();
     const debounceTimeout = useRef(null);
 
-    // ✅ safer fetchBalance (no false 0 reset)
-    const fetchBalance = useCallback(async () => {
+      const fetchBalance = useCallback(async (retries = 3) => {
         if (!accessToken) return;
         try {
             const response = await api.get("/account/balance");
             if (typeof response.data.balance === "number") {
                 setBalance(response.data.balance);
-            } else {
-                console.warn("Invalid balance response:", response.data);
             }
         } catch (error) {
-            console.error('Balance fetch error:', error);
-            toast.error("Could not fetch balance");
+            console.error('Balance fetch attempt failed:', error);
+            if (retries > 0) {
+                console.log(`Retrying balance fetch... ${retries} attempts left.`);
+                setTimeout(() => fetchBalance(retries - 1), 2000); // Wait 2s and retry
+            } else {
+                toast.error("Could not fetch balance after several attempts.");
+            }
         }
     }, [accessToken]);
 
     useEffect(() => {
         fetchBalance();
     }, [fetchBalance]);
-
     
     useEffect(() => {
         if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
