@@ -8,6 +8,7 @@ import { Badge } from './ui/badge';
 import { Bell, LayoutDashboard, User, History, LogOut } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Mail } from 'lucide-react';
+import { wakeBackend } from "../services/wakeBackend.js";
 
 const CustomDropdown = ({ trigger, children, isOpen, onOpenChange, className = "" }) => {
     const dropdownRef = useRef(null);
@@ -92,6 +93,10 @@ const Header = () => {
     const [unreadCount, setUnreadCount] = useState(0);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+    useEffect(() => {
+    wakeBackend(); 
+  }, []);
 
     const fetchNotifications = useCallback(async () => {
         try {
