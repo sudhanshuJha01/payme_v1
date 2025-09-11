@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback } from './ui/avatar';
 import { Badge } from './ui/badge';
 import { Bell, LayoutDashboard, User, History, LogOut } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { Mail } from 'lucide-react';
 
 const CustomDropdown = ({ trigger, children, isOpen, onOpenChange, className = "" }) => {
     const dropdownRef = useRef(null);
@@ -139,13 +140,16 @@ const Header = () => {
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur">
             <div className="container h-20 flex items-center justify-between mx-auto px-4">
-                <Link to="/dashboard" className="font-bold text-2xl" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+                {/* <Link to="/dashboard" className="font-bold text-4xl" style={{ fontFamily: "'Orbitron', sans-serif" }}>
                     Payme
-                </Link>
+                </Link> */}
+                <Link to="/dashboard" className="text-4xl font-black font-['Orbitron'] gradient-text flex items-center gap-2"> 
+                            <Mail className="h-8 w-8 text-primary" />
+                            PAYME
+                        </Link>
                 <div className="flex items-center gap-6">
                     <span className="font-medium hidden sm:block">Hello, {user?.fullname}</span>
                     
-                    {/* Custom Notification Dropdown */}
                     <CustomDropdown
                         isOpen={notificationsOpen}
                         onOpenChange={handleNotificationsOpen}

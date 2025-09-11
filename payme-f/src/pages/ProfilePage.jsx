@@ -14,10 +14,54 @@ const ProfilePage = () => {
     const [profileData, setProfileData] = useState({ fullname: user?.fullname || '' });
     const [passwordData, setPasswordData] = useState({ currentPassword: '', newPassword: '' });
 
-    const handleProfileChange = (e) => { /* ... no changes ... */ };
-    const handlePasswordChange = (e) => { /* ... no changes ... */ };
-    const handleUpdateProfile = async (e) => { /* ... no changes ... */ };
-    const handleUpdatePassword = async (e) => { /* ... no changes ... */ };
+    const handleProfileChange = (e) => {
+        const { name, value } = e.target;
+        setProfileData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handlePasswordChange = (e) => {
+        const { name, value } = e.target;
+        setPasswordData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleUpdateProfile = async (e) => {
+        e.preventDefault();
+        
+        // Debug info
+        console.log('Current user from store:', user);
+        console.log('Access token exists:', !!accessToken);
+        console.log('Token preview:', accessToken ? accessToken.substring(0, 20) + '...' : 'No token');
+        
+        try {
+            // First test with /me endpoint to verify token works
+            const meResponse = await api.get('/user/me');
+            console.log('Me endpoint response:', meResponse.data);
+            
+            const response = await api.patch('/user/update-profile', profileData);
+            console.log('Profile update response:', response.data);
+            login({ ...user, ...profileData }, accessToken);
+            toast.success('Profile updated successfully!');
+        } catch (error) {
+            console.error('Profile update error:', error.response?.data || error);
+            toast.error(error.response?.data?.message || 'Failed to update profile');
+        }
+    };
+
+    const handleUpdatePassword = async (e) => {
+        e.preventDefault();
+        
+        console.log('Password update attempt with token:', !!accessToken);
+        
+        try {
+            const response = await api.patch('/user/change-password', passwordData);
+            console.log('Password update response:', response.data);
+            setPasswordData({ currentPassword: '', newPassword: '' });
+            toast.success('Password updated successfully!');
+        } catch (error) {
+            console.error('Password update error:', error.response?.data || error);
+            toast.error(error.response?.data?.message || 'Failed to update password');
+        }
+    };
 
     return (
         <div className="animate-popup max-w-2xl mx-auto space-y-8">
@@ -45,7 +89,7 @@ const ProfilePage = () => {
                             <CardDescription>This information will be displayed to other users.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={handleUpdateProfile} className="space-y-6">
+                            <div className="space-y-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="fullname">Full Name</Label>
                                     <Input id="fullname" name="fullname" value={profileData.fullname} onChange={handleProfileChange} />
@@ -54,8 +98,8 @@ const ProfilePage = () => {
                                     <Label htmlFor="email">Email</Label>
                                     <Input id="email" type="email" value={user?.email || ''} disabled />
                                 </div>
-                                <Button type="submit">Save Changes</Button>
-                            </form>
+                                <Button onClick={handleUpdateProfile}>Save Changes</Button>
+                            </div>
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -68,7 +112,7 @@ const ProfilePage = () => {
                             <CardDescription>Change your password here. It's recommended to use a strong, unique password.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={handleUpdatePassword} className="space-y-6">
+                            <div className="space-y-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="currentPassword">Current Password</Label>
                                     <Input id="currentPassword" name="currentPassword" type="password" value={passwordData.currentPassword} onChange={handlePasswordChange} />
@@ -77,8 +121,8 @@ const ProfilePage = () => {
                                     <Label htmlFor="newPassword">New Password</Label>
                                     <Input id="newPassword" name="newPassword" type="password" value={passwordData.newPassword} onChange={handlePasswordChange} />
                                 </div>
-                                <Button type="submit">Update Password</Button>
-                            </form>
+                                <Button onClick={handleUpdatePassword}>Update Password</Button>
+                            </div>
                         </CardContent>
                     </Card>
                 </TabsContent>
