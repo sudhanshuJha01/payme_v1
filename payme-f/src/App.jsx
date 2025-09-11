@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import LandingPage from './pages/LandingPage.jsx'; 
 import SignupPage from './pages/SignupPage.jsx';
@@ -8,7 +8,7 @@ import DashboardPage from './pages/DashboardPage.jsx';
 import AppLayout from './components/AppLayout.jsx';
 import HistoryPage from './pages/HistoryPage';
 import ProfilePage from './pages/ProfilePage.jsx';
-
+import { wakeBackend } from './services/wakeBackend';
 
 
 const NotFound = () => <div className="text-center p-8">404 - Page Not Found</div>;
@@ -16,6 +16,9 @@ const NotFound = () => <div className="text-center p-8">404 - Page Not Found</di
 
 
 function App() {
+  useEffect(() => {
+    wakeBackend();
+  }, []);
   return (
     <BrowserRouter>
       <Routes>
