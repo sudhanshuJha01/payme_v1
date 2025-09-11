@@ -12,6 +12,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Avatar, AvatarFallback } from "../components/ui/avatar";
 import { Search, Send, Wallet, TrendingUp, ArrowUpRight, ArrowDownLeft, Plus, Minus, Clock, Activity } from 'lucide-react';
 
+
+
 const Balance = ({ value }) => (
     <div className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-6 rounded-2xl border border-border/50 backdrop-blur-sm">
         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
@@ -35,6 +37,8 @@ const Balance = ({ value }) => (
     </div>
 );
 
+
+
 const QuickActions = ({ children }) => (
     <div className="bg-card/30 p-4 rounded-2xl border border-border/50 backdrop-blur-sm">
         <h3 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
@@ -48,7 +52,7 @@ const QuickActions = ({ children }) => (
 );
 
 const UserListItem = ({ user, onSendClick }) => (
-    <div className="group flex items-center justify-between p-3 rounded-xl hover:bg-card/50 transition-all duration-200 border border-transparent hover:border-border/30">
+    <div onClick={() => onSendClick(user)} className="group flex items-center justify-between p-3 rounded-xl hover:bg-card/50 transition-all duration-200 border border-transparent hover:border-border/30">
         <div className="flex items-center gap-3">
             <div className="relative">
                 <Avatar className="ring-2 ring-background">
@@ -145,11 +149,16 @@ const DashboardPage = () => {
     const { accessToken, user: currentUser } = useAuthStore();
     const debounceTimeout = useRef(null);
 
+    // ✅ safer fetchBalance (no false 0 reset)
     const fetchBalance = useCallback(async () => {
         if (!accessToken) return;
         try {
             const response = await api.get("/account/balance");
-            setBalance(response.data.balance || 0);
+            if (typeof response.data.balance === "number") {
+                setBalance(response.data.balance);
+            } else {
+                console.warn("Invalid balance response:", response.data);
+            }
         } catch (error) {
             console.error('Balance fetch error:', error);
             toast.error("Could not fetch balance");
@@ -160,6 +169,7 @@ const DashboardPage = () => {
         fetchBalance();
     }, [fetchBalance]);
 
+    
     useEffect(() => {
         if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
         
@@ -188,6 +198,8 @@ const DashboardPage = () => {
         };
     }, [searchQuery, currentUser._id]);
 
+ 
+    
     const handleTransfer = async () => {
         if (!amount || Number(amount) <= 0) {
             toast.error("Please enter a valid amount");
@@ -289,7 +301,6 @@ const DashboardPage = () => {
                 </div>
             </div>
 
-            {/* Transfer Dialog */}
             <Dialog open={!!selectedUser} onOpenChange={() => setSelectedUser(null)}>
                 <DialogContent className="sm:max-w-md border-border/50 backdrop-blur-sm bg-background/95">
                     <DialogHeader className="text-center space-y-3">
