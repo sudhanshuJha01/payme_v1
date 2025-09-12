@@ -50,7 +50,7 @@ https://github.com/user-attachments/assets/92a40189-baa5-4f2c-b944-50c4c9cf7874
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/sudhanshuJha01/payme_v1
+    git clone https://github.com/sudhanshuJha01/payme_P2P.git
     ```
 2.  **Setup Backend:**
     ```bash
