@@ -1,112 +1,77 @@
-**Payme: A Full-Stack P2P Payment Application**
-===============================================
+# Payme 💸 - A Full-Stack P2P Payment Wallet
 
-_A modern, secure, and intuitive peer-to-peer payment wallet built with the MERN stack and integrated with Razorpay for real-world transaction capabilities._
+Payme is a modern, secure, and intuitive peer-to-peer payment application built with the MERN stack. It leverages Razorpay for real-world payment processing and features a complete authentication system, instant wallet transfers, and a secure withdrawal mechanism.
 
-<img width="1708" height="958" alt="image" src="https://github.com/user-attachments/assets/2e9c980d-a52d-405f-b5c3-280a880ae82a" />
+---
 
+## 🔗 Live Demo
 
-⭐ Features
-----------
+**[https://payme.sudhanshujha.tech/](https://payme.sudhanshujha.tech/)**
 
-*   **Secure User Authentication:** Complete auth system with email/password login, OTP verification for sign-ups, and a robust JWT (Access + Refresh Token) based session management.
-    
-*   **Instant P2P Wallet Transfers:** Seamlessly send money from your wallet to any other registered user on the platform. All transfers are atomic and secure.
-    
-*   **Add Money to Wallet:** Easily add funds to your wallet using Razorpay's secure checkout (supports UPI, Cards, etc.).
-    
-*   **Withdraw to Bank Account:** A clever "cash out" feature that uses Razorpay Payment Links to allow users to withdraw their wallet balance to any UPI ID.
-    
-*   **Real-time User Search:** Find other users on the platform instantly by searching for their name or email address.
-    
-*   **Complete Transaction History:** A detailed log of all account activity, including payments sent, received, added, and withdrawn.
-    
-*   **User Profile Management:** Users can update their personal information and change their password.
-    
-*   **Notifications:** A real-time notification system alerts users when they receive money.
-    
-*   **API Security:** Endpoints are protected with authentication middleware, rate limiting on sensitive routes, and sanitization to prevent common vulnerabilities like XSS and NoSQL injection.
-    
+**[📽️ VIDEO DEMO HERE]**
 
-🚀 Tech Stack
--------------
+https://github.com/user-attachments/assets/92a40189-baa5-4f2c-b944-50c4c9cf7874
 
-### **Backend**
+---
 
-*   **Node.js & Express.js**
-    
-*   **MongoDB & Mongoose**
-    
-*   **JSON Web Tokens (JWT)**
-    
-*   **Razorpay API**
-    
-*   **Bcrypt.js**
-    
+## ✨ Key Features
 
-### **Frontend**
+* **Secure Authentication:** Full user auth with OTP verification, password hashing, and a robust JWT (Access + Refresh Token) session management system.
+* **Instant Wallet Transfers:** Seamlessly send money to any other user on the platform using secure, atomic database transactions.
+* **Real-Money Integration:**
+    * **Add Money:** Easily add funds to your wallet using Razorpay's secure checkout.
+    * **Withdraw Money:** Cash out your wallet balance to any UPI ID using Razorpay Payment Links.
+* **Complete Financial Hub:**
+    * Dynamic, real-time user search by name or email.
+    * Detailed transaction history for all payments.
+    * In-app notifications for received funds.
+* **API Security:** Endpoints are protected with middleware for authentication, rate limiting, and sanitization.
 
-*   **React & Vite**
-    
-*   **Tailwind CSS**
-    
-*   **shadcn/ui**
-    
-*   **Zustand** (for state management)
-    
-*   **Axios** (for API calls)
-    
-*   **react-router-dom** (for routing)
-    
+---
 
-🔗 Live Demo
-------------
+## 📷 Dashboard
+<img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/7f7fba6c-b6a9-45d0-8c79-5603106e74f4" />
 
-**\[LINK TO YOUR DEPLOYED WEBSITE\]**
+---
 
-🛠️ Installation & Setup
-------------------------
+## 🚀 Tech Stack
 
-### **Prerequisites**
+![NodeJS](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Razorpay](https://img.shields.io/badge/Razorpay-02042B?style=for-the-badge&logo=razorpay&logoColor=3395FF)
 
-*   Node.js (v18.x or higher)
-    
-*   npm
-    
-*   MongoDB Atlas account
-    
-*   Razorpay account
-    
+---
 
-### **Backend Setup**
+## 🛠️ Getting Started
 
-1.  Clone the repository: git clone \[your-repo-link\]
-    
-2.  Navigate to the backend directory: cd backend
-    
-3.  Install dependencies: npm install
-    
-4.  Create a .env file and add the required environment variables.
-    
-5.  Start the server: npm run dev
-    
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/sudhanshuJha01/payme_v1
+    ```
+2.  **Setup Backend:**
+    ```bash
+    cd payme_P2P/backend
+    npm install
+    # Add your variables to the .env file
+    npm run dev
+    ```
+3.  **Setup Frontend:**
+    ```bash
+    cd payme_P2P/payme-f
+    npm install
+    # Add your VITE_BACKEND_URL to the .env file
+    npm run dev
+    ```
 
-### **Frontend Setup**
+---
 
-1.  Navigate to the frontend directory: cd frontend
-    
-2.  Install dependencies: npm install
-    
-3.  Create a .env file and add VITE\_BACKEND\_URL.
-    
-4.  Start the client: npm run dev
-    
+## ✍️ Author
 
-✍️ Author
----------
+**Sudhanshu Jha**
 
-*   **Sudhanshu Jha**
-    
-*   **LinkedIn:** \[YOUR\_LINKEDIN\_URL\]
-    
-*   **GitHub:** \[YOUR\_GITHUB\_URL\]
+* **LinkedIn:** [https://www.linkedin.com/in/sudhanshujha01/](https://www.linkedin.com/in/sudhanshujha01/)
+* **GitHub:** [https://github.com/sudhanshuJha01](https://github.com/sudhanshuJha01)
